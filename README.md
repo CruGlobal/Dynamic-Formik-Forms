@@ -1,6 +1,6 @@
 # Dynamic Formik Forms 📃 ✍️
 
-Testing out building dynamic forms utilzing [Formik](https://formik.org/) amd [Yup](https://github.com/jquense/yup).
+Testing out building dynamic forms utilzing [Formik](https://formik.org/) and [Yup](https://github.com/jquense/yup).
 
 ## Idea/Motivation
 
