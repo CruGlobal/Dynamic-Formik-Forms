@@ -3,7 +3,6 @@ import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 
 export const NameQuestion = (props: any) => {
-  console.log(props);
   // const renderError = props.error ? <strong>{props.error}</strong> : null;
   return (
     <Box
