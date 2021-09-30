@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { NameQuestion } from "../Fields/NameQuestion";
 import { EmailQuestion } from "../Fields/EmailQuestion";
 import { NumberQuestion } from "../Fields/NumberQuestion";
+import { SelectQuestion } from "../Fields/SelectQuestion";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 
@@ -47,26 +48,56 @@ const blocks = [
     registrantTypes: [],
     rules: [],
   },
+  {
+    id: "2764e22b-8623-4c2b-81e5-f625574521f2",
+    pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
+    title: "Dropdown Question",
+    exportFieldTitle: null,
+    type: "selectQuestion",
+    required: true,
+    position: 3,
+    content: {
+      // default: "option 1",
+      choices: [
+        { value: "option 1", desc: "", amount: 5 },
+        { value: "option 2", desc: "This is a description for value 2" },
+      ],
+    },
+    profileType: null,
+    registrantTypes: [],
+    rules: [
+      {
+        id: "e211fa0b-2b23-41e1-afc4-a9a645d97f59",
+        blockId: "2764e22b-8623-4c2b-81e5-f625574521f2",
+        parentBlockId: "0556295a-3c4d-45b2-a00e-42b1fe199421",
+        operator: ">",
+        value: "12",
+        position: 0,
+      },
+    ],
+  },
 ];
 
 enum QuestionTypes {
   nameQuestion = "string",
   emailQuestion = "string",
   numberQuestion = "number",
+  selectQuestion = "string",
 }
 
 const createYupSchema = (schema: any, config: any = {}) => {
   // console.log(config);
+  const requiredMessage = "The field is required";
   const { id, type, required } = config;
   let blockType = () => {
     switch (type) {
       case "nameQuestion":
         return yup.object({
           firstName: required
-            ? yup.string().required("First Name is required")
+            ? yup.string().required(requiredMessage)
             : yup.string(),
           lastName: required
-            ? yup.string().required("Last Name is required")
+            ? yup.string().required(requiredMessage)
             : yup.string(),
         });
       case "emailQuestion":
@@ -74,17 +105,19 @@ const createYupSchema = (schema: any, config: any = {}) => {
           ? yup
               .string()
               .email("A valid email address is required")
-              .required("Email is required")
+              .required(requiredMessage)
           : yup.string().email("A valid email address is required");
       case "numberQuestion":
-        return required ? yup.number().required() : yup.number();
+        return required ? yup.number().required(requiredMessage) : yup.number();
+      case "selectQuestion":
+        return required ? yup.string().required(requiredMessage) : yup.string();
       default:
         return yup.object({
           firstName: required
-            ? yup.string().required("First Name is required")
+            ? yup.string().required(requiredMessage)
             : yup.string(),
           lastName: required
-            ? yup.string().required("Last Name is required")
+            ? yup.string().required(requiredMessage)
             : yup.string(),
         });
     }
@@ -135,12 +168,13 @@ export const ConferenceForm: React.FC = () => {
           };
         case "emailQuestion":
         case "numberQuestion":
+        case "selectQuestion":
           return {
             amount: 0,
             blockId: "blockId",
             id: block.id,
             registrantId: "registrantId",
-            value: "",
+            value: block.content?.default ?? "",
           };
       }
     };
@@ -153,7 +187,11 @@ export const ConferenceForm: React.FC = () => {
         nameQuestion: NameQuestion,
         emailQuestion: EmailQuestion,
         numberQuestion: NumberQuestion,
+        selectQuestion: SelectQuestion,
       };
+
+      if (Object.keys(QuestionTypes).indexOf(block.type) === -1) return null;
+
       const Component = fieldMap[block.type];
 
       let error =
@@ -169,6 +207,7 @@ export const ConferenceForm: React.FC = () => {
             onChange={props.handleChange}
             onSetFieldValue={props.setFieldValue}
             error={error}
+            content={block.content}
             required={block.required}
           />
         );
@@ -190,7 +229,7 @@ export const ConferenceForm: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            {renderFormElements(props)}{" "}
+            {renderFormElements(props)}
             <Button type='submit' variant='contained'>
               Submit
             </Button>
