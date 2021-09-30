@@ -3,7 +3,13 @@ import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 
 export const NameQuestion = (props: any) => {
-  // const renderError = props.error ? <strong>{props.error}</strong> : null;
+  const renderFieldError = (name: string) =>
+    props.error?.value?.[name] ? (
+      <strong>{props.error.value[name]}</strong>
+    ) : null;
+  const fieldHasError = (name: string) =>
+    props.error?.value?.[name] !== undefined;
+
   return (
     <Box
       display='flex'
@@ -11,7 +17,11 @@ export const NameQuestion = (props: any) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl fullWidth>
+      <FormControl
+        fullWidth
+        required={props.required}
+        error={!!props.error?.value}
+      >
         <Grid container direction='column'>
           <Grid item>
             <FormLabel required={props.required}>{props.label}</FormLabel>
@@ -29,8 +39,8 @@ export const NameQuestion = (props: any) => {
                 })
               }
               required={props.required}
-              // helperText={renderError}
-              error={props.error}
+              helperText={renderFieldError("firstName")}
+              error={fieldHasError("firstName")}
             />
             <TextField
               type='text'
@@ -44,8 +54,8 @@ export const NameQuestion = (props: any) => {
                 })
               }
               required={props.required}
-              // helperText={renderError}
-              // error={props.error}
+              helperText={renderFieldError("lastName")}
+              error={fieldHasError("lastName")}
             />
           </Grid>
         </Grid>
