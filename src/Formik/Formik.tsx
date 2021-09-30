@@ -71,8 +71,11 @@ const createYupSchema = (schema: any, config: any = {}) => {
         });
       case "emailQuestion":
         return required
-          ? yup.string().email().required("A valid email is required")
-          : yup.string().email();
+          ? yup
+              .string()
+              .email("A valid email address is required")
+              .required("Email is required")
+          : yup.string().email("A valid email address is required");
       case "numberQuestion":
         return required ? yup.number().required() : yup.number();
       default:
@@ -86,9 +89,11 @@ const createYupSchema = (schema: any, config: any = {}) => {
         });
     }
   };
+
   if (Object.keys(QuestionTypes).indexOf(type) === -1) {
     return schema;
   }
+
   let validator = yup.object({
     amount: yup.number().default(0),
     blockId: yup.string().required(),
@@ -150,8 +155,9 @@ export const ConferenceForm: React.FC = () => {
         numberQuestion: NumberQuestion,
       };
       const Component = fieldMap[block.type];
-      // let error =
-      //   props.errors.hasOwnProperty(block.id) && props.errors[block.id];
+
+      let error =
+        props.errors.hasOwnProperty(block.id) && props.errors[block.id];
 
       if (block.type) {
         return (
@@ -162,7 +168,7 @@ export const ConferenceForm: React.FC = () => {
             value={props.values[block.id]}
             onChange={props.handleChange}
             onSetFieldValue={props.setFieldValue}
-            // error={error}
+            error={error}
             required={block.required}
           />
         );
