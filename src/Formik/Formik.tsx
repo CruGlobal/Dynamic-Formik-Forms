@@ -7,6 +7,8 @@ import { NumberQuestion } from "../Fields/NumberQuestion";
 import { SelectQuestion } from "../Fields/SelectQuestion";
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
+import { TextQuestion } from "../Fields/TextQuestion";
+import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
 
 const blocks = [
   {
@@ -76,6 +78,38 @@ const blocks = [
       },
     ],
   },
+  {
+    id: "9a222b0a-ff34-44e8-8916-fdfad7260a25",
+    pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
+    profileType: null,
+    registrantTypes: [],
+    required: false,
+    rules: [],
+    title: "Text Question",
+    type: "textQuestion",
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
+  },
+  {
+    id: "fb2a2502-31f8-4510-a077-9b7f41dd5c25",
+    pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
+    profileType: null,
+    registrantTypes: [],
+    required: true,
+    rules: [],
+    title: "TextArea",
+    type: "textareaQuestion",
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
+  },
 ];
 
 enum QuestionTypes {
@@ -83,6 +117,8 @@ enum QuestionTypes {
   emailQuestion = "string",
   numberQuestion = "number",
   selectQuestion = "string",
+  textQuestion = "string",
+  textareaQuestion = "string",
 }
 
 const createYupSchema = (schema: any, config: any = {}) => {
@@ -109,6 +145,8 @@ const createYupSchema = (schema: any, config: any = {}) => {
           : yup.string().email("A valid email address is required");
       case "numberQuestion":
         return required ? yup.number().required(requiredMessage) : yup.number();
+      case "textQuestion":
+      case "textareaQuestion":
       case "selectQuestion":
         return required ? yup.string().required(requiredMessage) : yup.string();
       default:
@@ -169,6 +207,8 @@ export const ConferenceForm: React.FC = () => {
         case "emailQuestion":
         case "numberQuestion":
         case "selectQuestion":
+        case "textQuestion":
+        case "textareaQuestion":
           return {
             amount: 0,
             blockId: "blockId",
@@ -188,6 +228,8 @@ export const ConferenceForm: React.FC = () => {
         emailQuestion: EmailQuestion,
         numberQuestion: NumberQuestion,
         selectQuestion: SelectQuestion,
+        textQuestion: TextQuestion,
+        textareaQuestion: TextAreaQuestion,
       };
 
       if (Object.keys(QuestionTypes).indexOf(block.type) === -1) return null;
