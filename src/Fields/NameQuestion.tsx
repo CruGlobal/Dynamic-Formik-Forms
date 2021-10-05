@@ -1,12 +1,14 @@
 import React from "react";
-import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Grid,
+  TextField,
+} from "@mui/material";
 import { Box } from "@mui/system";
 
 export const NameQuestion = (props: any) => {
-  const renderFieldError = (name: string) =>
-    props.error?.value?.[name] ? (
-      <strong>{props.error.value[name]}</strong>
-    ) : null;
   const fieldHasError = (name: string) =>
     props.error?.value?.[name] !== undefined;
 
@@ -26,37 +28,43 @@ export const NameQuestion = (props: any) => {
           <Grid item>
             <FormLabel required={props.required}>{props.label}</FormLabel>
           </Grid>
-          <Grid item>
-            <TextField
-              type='text'
-              name={props.name}
-              placeholder={"First Name"}
-              value={props.value.value.firstName}
-              onChange={(e) =>
-                props.onSetFieldValue(props.name, {
-                  ...props.value,
-                  value: { ...props.value.value, firstName: e.target.value },
-                })
-              }
-              required={props.required}
-              helperText={renderFieldError("firstName")}
-              error={fieldHasError("firstName")}
-            />
-            <TextField
-              type='text'
-              name={props.name}
-              placeholder={"Last Name"}
-              value={props.value.value.lastName}
-              onChange={(e) =>
-                props.onSetFieldValue(props.name, {
-                  ...props.value,
-                  value: { ...props.value.value, lastName: e.target.value },
-                })
-              }
-              required={props.required}
-              helperText={renderFieldError("lastName")}
-              error={fieldHasError("lastName")}
-            />
+          <Grid container item direction='row'>
+            <Grid container direction='column' xs={6}>
+              <TextField
+                type='text'
+                fullWidth
+                name={props.name}
+                placeholder={"First Name"}
+                value={props.value.value.firstName}
+                onChange={(e) =>
+                  props.onSetFieldValue(props.name, {
+                    ...props.value,
+                    value: { ...props.value.value, firstName: e.target.value },
+                  })
+                }
+                required={props.required}
+                error={fieldHasError("firstName")}
+              />
+              <FormHelperText>{props?.error?.value?.firstName}</FormHelperText>
+            </Grid>
+            <Grid container direction='column' xs={6}>
+              <TextField
+                type='text'
+                fullWidth
+                name={props.name}
+                placeholder={"Last Name"}
+                value={props.value.value.lastName}
+                onChange={(e) =>
+                  props.onSetFieldValue(props.name, {
+                    ...props.value,
+                    value: { ...props.value.value, lastName: e.target.value },
+                  })
+                }
+                required={props.required}
+                error={fieldHasError("lastName")}
+              />
+              <FormHelperText>{props?.error?.value?.lastName}</FormHelperText>
+            </Grid>
           </Grid>
         </Grid>
       </FormControl>
