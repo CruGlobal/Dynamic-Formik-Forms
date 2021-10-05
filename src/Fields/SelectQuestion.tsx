@@ -1,5 +1,11 @@
 import React from "react";
-import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { Box } from "@mui/system";
 
 export const SelectQuestion = (props: any) => {
@@ -48,6 +54,7 @@ export const SelectQuestion = (props: any) => {
             )
           )}
         </Select>
+        <FormHelperText>{props?.error?.value}</FormHelperText>
       </FormControl>
     </Box>
   );

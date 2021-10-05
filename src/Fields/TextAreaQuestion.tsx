@@ -1,11 +1,14 @@
 import React from "react";
-import { FormControl, FormLabel, Grid, TextField } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Grid,
+  TextField,
+} from "@mui/material";
 import { Box } from "@mui/system";
 
 export const TextAreaQuestion = (props: any) => {
-  const renderError = props.error?.value ? (
-    <strong>{props.error.value}</strong>
-  ) : null;
   return (
     <Box
       display='flex'
@@ -36,9 +39,9 @@ export const TextAreaQuestion = (props: any) => {
                 })
               }
               required={props.required}
-              helperText={renderError}
               error={!!props.error?.value}
             />
+            <FormHelperText>{props?.error?.value}</FormHelperText>
           </Grid>
         </Grid>
       </FormControl>
