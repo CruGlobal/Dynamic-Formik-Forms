@@ -9,6 +9,7 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { TextQuestion } from "../Fields/TextQuestion";
 import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
+import { GenderQuestion } from "../Fields/GenderQuestion";
 
 const blocks = [
   {
@@ -110,15 +111,32 @@ const blocks = [
       ruleoperand: "AND",
     },
   },
+  {
+    id: "8889a73f-f658-4682-bfdf-5507e533c5f2",
+    pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
+    profileType: "GENDER",
+    registrantTypes: [],
+    required: false,
+    rules: [],
+    title: "Gender Question",
+    type: "genderQuestion",
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
+  },
 ];
 
 enum QuestionTypes {
-  nameQuestion = "string",
-  emailQuestion = "string",
-  numberQuestion = "number",
-  selectQuestion = "string",
-  textQuestion = "string",
-  textareaQuestion = "string",
+  nameQuestion,
+  emailQuestion,
+  numberQuestion,
+  selectQuestion,
+  textQuestion,
+  textareaQuestion,
+  genderQuestion,
 }
 
 const createYupSchema = (schema: any, config: any = {}) => {
@@ -148,16 +166,10 @@ const createYupSchema = (schema: any, config: any = {}) => {
       case "textQuestion":
       case "textareaQuestion":
       case "selectQuestion":
+      case "genderQuestion":
         return required ? yup.string().required(requiredMessage) : yup.string();
       default:
-        return yup.object({
-          firstName: required
-            ? yup.string().required(requiredMessage)
-            : yup.string(),
-          lastName: required
-            ? yup.string().required(requiredMessage)
-            : yup.string(),
-        });
+        return required ? yup.string().required(requiredMessage) : yup.string();
     }
   };
 
@@ -209,6 +221,7 @@ export const ConferenceForm: React.FC = () => {
         case "selectQuestion":
         case "textQuestion":
         case "textareaQuestion":
+        case "genderQuestion":
           return {
             amount: 0,
             blockId: "blockId",
@@ -230,6 +243,7 @@ export const ConferenceForm: React.FC = () => {
         selectQuestion: SelectQuestion,
         textQuestion: TextQuestion,
         textareaQuestion: TextAreaQuestion,
+        genderQuestion: GenderQuestion,
       };
 
       if (Object.keys(QuestionTypes).indexOf(block.type) === -1) return null;
