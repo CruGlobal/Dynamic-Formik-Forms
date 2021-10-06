@@ -10,6 +10,7 @@ import { Box } from "@mui/system";
 import { TextQuestion } from "../Fields/TextQuestion";
 import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
 import { GenderQuestion } from "../Fields/GenderQuestion";
+import { PhoneQuestion } from "../Fields/PhoneQuestion";
 
 const blocks = [
   {
@@ -127,6 +128,16 @@ const blocks = [
       ruleoperand: "AND",
     },
   },
+  {
+    id: "d4186c2b-b5e7-4a28-b188-47b9d3077561",
+    pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
+    profileType: "PHONE",
+    registrantTypes: [],
+    required: true,
+    rules: [],
+    title: "Telephone",
+    type: "phoneQuestion",
+  },
 ];
 
 enum QuestionTypes {
@@ -137,7 +148,11 @@ enum QuestionTypes {
   textQuestion,
   textareaQuestion,
   genderQuestion,
+  phoneQuestion,
 }
+
+// grabbed from https://stackoverflow.com/a/62039270
+const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 
 const createYupSchema = (schema: any, config: any = {}) => {
   // console.log(config);
@@ -163,6 +178,13 @@ const createYupSchema = (schema: any, config: any = {}) => {
           : yup.string().email("A valid email address is required");
       case "numberQuestion":
         return required ? yup.number().required(requiredMessage) : yup.number();
+      case "phoneQuestion":
+        return required
+          ? yup
+              .string()
+              .matches(phoneRegex, "Invalid phone number")
+              .required(requiredMessage)
+          : yup.string().matches(phoneRegex, "Invalid phone number");
       case "textQuestion":
       case "textareaQuestion":
       case "selectQuestion":
@@ -202,7 +224,7 @@ export const ConferenceForm: React.FC = () => {
 
   const validationSchema = yup.object().shape(yepSchema);
   const initialFormValues: any = {};
-  blocks.forEach((block: { id: string; content: any; type: string }) => {
+  blocks.forEach((block: any) => {
     const getBlockValue = () => {
       switch (block.type) {
         case "nameQuestion":
@@ -222,6 +244,7 @@ export const ConferenceForm: React.FC = () => {
         case "textQuestion":
         case "textareaQuestion":
         case "genderQuestion":
+        case "phoneQuestion":
           return {
             amount: 0,
             blockId: "blockId",
@@ -244,6 +267,7 @@ export const ConferenceForm: React.FC = () => {
         textQuestion: TextQuestion,
         textareaQuestion: TextAreaQuestion,
         genderQuestion: GenderQuestion,
+        phoneQuestion: PhoneQuestion,
       };
 
       if (Object.keys(QuestionTypes).indexOf(block.type) === -1) return null;
