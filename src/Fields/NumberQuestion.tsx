@@ -23,6 +23,7 @@ export const NumberQuestion = (props: any) => {
           <Grid item>
             <TextField
               fullWidth
+              size='small'
               type='number'
               name={props.name}
               value={props.value.value}

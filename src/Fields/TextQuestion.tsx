@@ -28,6 +28,7 @@ export const TextQuestion = (props: any) => {
           <Grid item>
             <TextField
               fullWidth
+              size='small'
               type='text'
               name={props.name}
               placeholder={""}

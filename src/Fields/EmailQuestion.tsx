@@ -27,6 +27,7 @@ export const EmailQuestion = (props: any) => {
           </Grid>
           <Grid item>
             <TextField
+              size='small'
               fullWidth
               type='email'
               name={props.name}
