@@ -28,11 +28,18 @@ export const NameQuestion = (props: any) => {
           <Grid item>
             <FormLabel required={props.required}>{props.label}</FormLabel>
           </Grid>
-          <Grid container item direction='row'>
-            <Grid container direction='column' xs={6}>
+          <Grid
+            container
+            item
+            direction='row'
+            justifyContent='space-between'
+            spacing={2}
+          >
+            <Grid container item direction='column' xs={6}>
               <TextField
                 type='text'
                 fullWidth
+                size='small'
                 name={props.name}
                 placeholder={"First Name"}
                 value={props.value.value.firstName}
@@ -47,10 +54,11 @@ export const NameQuestion = (props: any) => {
               />
               <FormHelperText>{props?.error?.value?.firstName}</FormHelperText>
             </Grid>
-            <Grid container direction='column' xs={6}>
+            <Grid container item direction='column' xs={6}>
               <TextField
                 type='text'
                 fullWidth
+                size='small'
                 name={props.name}
                 placeholder={"Last Name"}
                 value={props.value.value.lastName}

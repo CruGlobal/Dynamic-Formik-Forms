@@ -23,8 +23,9 @@ export const SelectQuestion = (props: any) => {
       >
         <FormLabel>{props.label}</FormLabel>
         <Select
-          value={props.value.value}
           fullWidth
+          size='small'
+          value={props.value.value}
           required={props.required}
           error={!!props.error?.value}
           onChange={(e) =>

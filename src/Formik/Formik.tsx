@@ -5,7 +5,7 @@ import { NameQuestion } from "../Fields/NameQuestion";
 import { EmailQuestion } from "../Fields/EmailQuestion";
 import { NumberQuestion } from "../Fields/NumberQuestion";
 import { SelectQuestion } from "../Fields/SelectQuestion";
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { TextQuestion } from "../Fields/TextQuestion";
 import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
@@ -173,9 +173,11 @@ const createYupSchema = (schema: any, config: any = {}) => {
         return required
           ? yup
               .string()
-              .email("A valid email address is required")
+              .email("Please enter a valid email such as: example@domain.com")
               .required(requiredMessage)
-          : yup.string().email("A valid email address is required");
+          : yup
+              .string()
+              .email("Please enter a valid email such as: example@domain.com");
       case "numberQuestion":
         return required ? yup.number().required(requiredMessage) : yup.number();
       case "phoneQuestion":
@@ -310,9 +312,24 @@ export const ConferenceForm: React.FC = () => {
             }}
           >
             {renderFormElements(props)}
-            <Button type='submit' variant='contained'>
-              Submit
-            </Button>
+            <Grid container spacing={1}>
+              <Grid item xs={4}>
+                <Button variant='contained' color='secondary'>
+                  Go Back
+                </Button>
+              </Grid>
+              <Grid item xs={8}>
+                <Button
+                  disabled={!props.isValid || props.isValidating}
+                  type='submit'
+                  fullWidth
+                  variant='contained'
+                  color='success'
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
           </Form>
         </Box>
       )}

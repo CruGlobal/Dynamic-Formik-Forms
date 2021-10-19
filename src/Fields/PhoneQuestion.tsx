@@ -28,6 +28,7 @@ export const PhoneQuestion = (props: any) => {
           <Grid item>
             <TextField
               fullWidth
+              size='small'
               type='tel'
               name={props.name}
               placeholder={""}
