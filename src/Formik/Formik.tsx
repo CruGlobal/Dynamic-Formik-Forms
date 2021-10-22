@@ -11,6 +11,7 @@ import { TextQuestion } from "../Fields/TextQuestion";
 import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
 import { GenderQuestion } from "../Fields/GenderQuestion";
 import { PhoneQuestion } from "../Fields/PhoneQuestion";
+import { YearInSchoolQuestion } from "../Fields/YearInSchoolQuestion";
 
 const blocks = [
   {
@@ -138,6 +139,22 @@ const blocks = [
     title: "Telephone",
     type: "phoneQuestion",
   },
+  {
+    id: "8f877b39-2653-484b-beb7-30645a7d79d1",
+    pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
+    profileType: "YEAR_IN_SCHOOL",
+    registrantTypes: [],
+    required: false,
+    rules: [],
+    title: "Year in School",
+    type: "yearInSchoolQuestion",
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
+  },
 ];
 
 enum QuestionTypes {
@@ -149,6 +166,7 @@ enum QuestionTypes {
   textareaQuestion,
   genderQuestion,
   phoneQuestion,
+  yearInSchoolQuestion,
 }
 
 // grabbed from https://stackoverflow.com/a/62039270
@@ -191,6 +209,7 @@ const createYupSchema = (schema: any, config: any = {}) => {
       case "textareaQuestion":
       case "selectQuestion":
       case "genderQuestion":
+      case "yearInSchoolQuestion":
         return required ? yup.string().required(requiredMessage) : yup.string();
       default:
         return required ? yup.string().required(requiredMessage) : yup.string();
@@ -247,6 +266,7 @@ export const ConferenceForm: React.FC = () => {
         case "textareaQuestion":
         case "genderQuestion":
         case "phoneQuestion":
+        case "yearInSchoolQuestion":
           return {
             amount: 0,
             blockId: "blockId",
@@ -270,6 +290,7 @@ export const ConferenceForm: React.FC = () => {
         textareaQuestion: TextAreaQuestion,
         genderQuestion: GenderQuestion,
         phoneQuestion: PhoneQuestion,
+        yearInSchoolQuestion: YearInSchoolQuestion,
       };
 
       if (Object.keys(QuestionTypes).indexOf(block.type) === -1) return null;
@@ -312,7 +333,7 @@ export const ConferenceForm: React.FC = () => {
             }}
           >
             {renderFormElements(props)}
-            <Grid container spacing={1}>
+            <Grid container spacing={1} marginY={2}>
               <Grid item xs={4}>
                 <Button variant='contained' color='secondary'>
                   Go Back
