@@ -12,6 +12,7 @@ import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
 import { GenderQuestion } from "../Fields/GenderQuestion";
 import { PhoneQuestion } from "../Fields/PhoneQuestion";
 import { YearInSchoolQuestion } from "../Fields/YearInSchoolQuestion";
+import { AddressQuestion } from "../Fields/AddressQuestion";
 
 const blocks = [
   {
@@ -155,9 +156,26 @@ const blocks = [
       ruleoperand: "AND",
     },
   },
+  {
+    id: "c703c972-8cc8-46d1-bafc-b34b6e967012",
+    pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
+    profileType: "ADDRESS",
+    registrantTypes: [],
+    required: true,
+    rules: [],
+    title: "Address Question",
+    type: "addressQuestion",
+    content: {
+      default: "",
+      ruleoperand: "AND",
+      forceSelections: {},
+      forceSelectionRuleOperand: "AND",
+    },
+  },
 ];
 
 enum QuestionTypes {
+  addressQuestion,
   nameQuestion,
   emailQuestion,
   numberQuestion,
@@ -171,6 +189,8 @@ enum QuestionTypes {
 
 // grabbed from https://stackoverflow.com/a/62039270
 const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+// grabbed from https://stackoverflow.com/a/2577239
+const zipCodeRegex = RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
 
 const createYupSchema = (schema: any, config: any = {}) => {
   // console.log(config);
@@ -178,6 +198,16 @@ const createYupSchema = (schema: any, config: any = {}) => {
   const { id, type, required } = config;
   let blockType = () => {
     switch (type) {
+      case "addressQuestion":
+        return yup.object({
+          address1: required ? yup.string().required() : yup.string(),
+          address2: yup.string().notRequired(),
+          city: required ? yup.string().required() : yup.string(),
+          state: required ? yup.string().required() : yup.string(),
+          zip: required
+            ? yup.string().matches(zipCodeRegex).required()
+            : yup.string().matches(zipCodeRegex),
+        });
       case "nameQuestion":
         return yup.object({
           firstName: required
@@ -248,6 +278,20 @@ export const ConferenceForm: React.FC = () => {
   blocks.forEach((block: any) => {
     const getBlockValue = () => {
       switch (block.type) {
+        case "addressQuestion":
+          return {
+            amount: 0,
+            blockId: "blockId",
+            id: block.id,
+            registrantId: "registrantId",
+            value: {
+              address1: "",
+              address2: "",
+              city: "",
+              state: "",
+              zip: "",
+            },
+          };
         case "nameQuestion":
           return {
             amount: 0,
@@ -282,6 +326,7 @@ export const ConferenceForm: React.FC = () => {
   const renderFormElements = (props: FormikProps<any>): any => {
     return blocks.map((block: any, index) => {
       const fieldMap: any = {
+        addressQuestion: AddressQuestion,
         nameQuestion: NameQuestion,
         emailQuestion: EmailQuestion,
         numberQuestion: NumberQuestion,
@@ -330,6 +375,8 @@ export const ConferenceForm: React.FC = () => {
             style={{
               display: "flex",
               flexDirection: "column",
+              width: "582px",
+              padding: "15px",
             }}
           >
             {renderFormElements(props)}
