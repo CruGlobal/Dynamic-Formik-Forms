@@ -43,6 +43,7 @@ export const YearInSchoolQuestion = (props: any) => {
             >
               {Object.values(SchoolYearsEnum).map((year) => (
                 <FormControlLabel
+                  key={year}
                   value={year}
                   control={<Radio />}
                   label={year}
