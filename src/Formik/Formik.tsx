@@ -5,7 +5,7 @@ import { NameQuestion } from "../Fields/NameQuestion";
 import { EmailQuestion } from "../Fields/EmailQuestion";
 import { NumberQuestion } from "../Fields/NumberQuestion";
 import { SelectQuestion } from "../Fields/SelectQuestion";
-import { Button, Grid } from "@mui/material";
+import { Button, FormHelperText, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { TextQuestion } from "../Fields/TextQuestion";
 import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
@@ -194,7 +194,7 @@ const zipCodeRegex = RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
 
 const createYupSchema = (schema: any, config: any = {}) => {
   // console.log(config);
-  const requiredMessage = "The field is required";
+  const requiredMessage = "This field is required";
   const { id, type, required } = config;
   let blockType = () => {
     switch (type) {
@@ -368,6 +368,7 @@ export const ConferenceForm: React.FC = () => {
       initialValues={initialFormValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      validateOnMount={true}
     >
       {(props): ReactElement => (
         <Box display='flex' justifyContent='center'>
@@ -380,22 +381,32 @@ export const ConferenceForm: React.FC = () => {
             }}
           >
             {renderFormElements(props)}
-            <Grid container spacing={1} marginY={2}>
-              <Grid item xs={4}>
-                <Button variant='contained' color='secondary'>
+            <Grid container spacing={2} marginY={2}>
+              <Grid item xs={3}>
+                <Button variant='contained' color='neutral' fullWidth>
                   Go Back
                 </Button>
               </Grid>
-              <Grid item xs={8}>
+              <Grid container item xs={9} justifyContent='center'>
                 <Button
-                  disabled={!props.isValid || props.isValidating}
+                  disabled={
+                    !props.isValid || props.isValidating || !props.dirty
+                  }
                   type='submit'
                   fullWidth
                   variant='contained'
                   color='success'
+                  aria-disabled={
+                    !props.isValid || props.isValidating || !props.dirty
+                  }
                 >
                   Submit
                 </Button>
+                {!props.isValid && (
+                  <FormHelperText error={!props.isValid}>
+                    Please fill in all required fields
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
           </Form>
