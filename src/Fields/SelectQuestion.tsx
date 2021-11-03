@@ -28,12 +28,18 @@ export const SelectQuestion = (props: any) => {
           value={props.value.value}
           required={props.required}
           error={!!props.error?.value}
-          onChange={(e) =>
+          onChange={(e) => {
+            const choiceIndex = props.content?.choices.findIndex(
+              (choice: { value: string; desc?: string; amount?: number }) =>
+                choice.value === e.target.value
+            );
+
             props.onSetFieldValue(props.name, {
               ...props.value,
               value: e.target.value,
-            })
-          }
+              amount: props.content?.choices[choiceIndex].amount ?? 0,
+            });
+          }}
         >
           <MenuItem disabled value={""}>
             Choose one...
