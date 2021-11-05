@@ -14,6 +14,7 @@ import { PhoneQuestion } from "../Fields/PhoneQuestion";
 import { YearInSchoolQuestion } from "../Fields/YearInSchoolQuestion";
 import { AddressQuestion } from "../Fields/AddressQuestion";
 
+//#region JSON Data
 const blocks = [
   {
     id: "26c09fa0-f62e-4dc4-a568-b061da6fdb09",
@@ -173,6 +174,13 @@ const blocks = [
     },
   },
 ];
+//#endregion
+
+//#region Yup Scehma Creation
+// grabbed from https://stackoverflow.com/a/62039270
+const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+// grabbed from https://stackoverflow.com/a/2577239
+const zipCodeRegex = RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
 
 enum QuestionTypes {
   addressQuestion,
@@ -186,11 +194,6 @@ enum QuestionTypes {
   phoneQuestion,
   yearInSchoolQuestion,
 }
-
-// grabbed from https://stackoverflow.com/a/62039270
-const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
-// grabbed from https://stackoverflow.com/a/2577239
-const zipCodeRegex = RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
 
 const createYupSchema = (schema: any, config: any = {}) => {
   // console.log(config);
@@ -267,62 +270,68 @@ const createYupSchema = (schema: any, config: any = {}) => {
   return schema;
 };
 
-export const ConferenceForm: React.FC = () => {
-  const onSubmit = (attributes: any) => {
-    console.log(attributes);
+const yepSchema = blocks.reduce(createYupSchema, {});
+const validationSchema = yup.object().shape(yepSchema);
+
+interface FormSchemaType extends yup.Asserts<typeof validationSchema> {}
+
+const onSubmit = (attributes: FormSchemaType) => {
+  console.log(attributes);
+};
+
+const initialFormValues: FormSchemaType = {};
+
+blocks.forEach((block: any) => {
+  const getBlockValue = () => {
+    switch (block.type) {
+      case "addressQuestion":
+        return {
+          amount: 0,
+          blockId: "blockId",
+          id: block.id,
+          registrantId: "registrantId",
+          value: {
+            address1: "",
+            address2: "",
+            city: "",
+            state: "",
+            zip: "",
+          },
+        };
+      case "nameQuestion":
+        return {
+          amount: 0,
+          blockId: "blockId",
+          id: block.id,
+          registrantId: "registrantId",
+          value: {
+            firstName: "",
+            lastName: "",
+          },
+        };
+      case "emailQuestion":
+      case "numberQuestion":
+      case "selectQuestion":
+      case "textQuestion":
+      case "textareaQuestion":
+      case "genderQuestion":
+      case "phoneQuestion":
+      case "yearInSchoolQuestion":
+        return {
+          amount: 0,
+          blockId: "blockId",
+          id: block.id,
+          registrantId: "registrantId",
+          value: block.content?.default ?? "",
+        };
+    }
   };
-  const yepSchema = blocks.reduce(createYupSchema, {});
+  initialFormValues[block.id] = getBlockValue() || "";
+});
+//#endregion
 
-  const validationSchema = yup.object().shape(yepSchema);
-  const initialFormValues: any = {};
-  blocks.forEach((block: any) => {
-    const getBlockValue = () => {
-      switch (block.type) {
-        case "addressQuestion":
-          return {
-            amount: 0,
-            blockId: "blockId",
-            id: block.id,
-            registrantId: "registrantId",
-            value: {
-              address1: "",
-              address2: "",
-              city: "",
-              state: "",
-              zip: "",
-            },
-          };
-        case "nameQuestion":
-          return {
-            amount: 0,
-            blockId: "blockId",
-            id: block.id,
-            registrantId: "registrantId",
-            value: {
-              firstName: "",
-              lastName: "",
-            },
-          };
-        case "emailQuestion":
-        case "numberQuestion":
-        case "selectQuestion":
-        case "textQuestion":
-        case "textareaQuestion":
-        case "genderQuestion":
-        case "phoneQuestion":
-        case "yearInSchoolQuestion":
-          return {
-            amount: 0,
-            blockId: "blockId",
-            id: block.id,
-            registrantId: "registrantId",
-            value: block.content?.default ?? "",
-          };
-      }
-    };
-    initialFormValues[block.id] = getBlockValue() || "";
-  });
-
+export const ConferenceForm: React.FC = () => {
+  //#region Form Elements Creation
   const renderFormElements = (props: FormikProps<any>): any => {
     return blocks.map((block: any, index) => {
       const fieldMap: any = {
@@ -356,6 +365,9 @@ export const ConferenceForm: React.FC = () => {
       return "";
     });
   };
+  //#endregion
+
+  //#region JSX
   return (
     <Formik
       initialValues={initialFormValues}
@@ -406,5 +418,6 @@ export const ConferenceForm: React.FC = () => {
         </Box>
       )}
     </Formik>
+    //#endregion
   );
 };
