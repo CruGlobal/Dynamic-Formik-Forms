@@ -342,19 +342,12 @@ export const ConferenceForm: React.FC = () => {
 
       const Component = fieldMap[block.type];
 
-      let error =
-        props.errors.hasOwnProperty(block.id) && props.errors[block.id];
-
       if (block.type) {
         return (
           <Component
             key={index}
             label={block.title}
             name={block.id}
-            value={props.values[block.id]}
-            onChange={props.handleChange}
-            onSetFieldValue={props.setFieldValue}
-            error={error}
             content={block.content}
             required={block.required}
           />

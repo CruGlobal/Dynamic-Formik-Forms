@@ -7,11 +7,9 @@ import {
   TextField,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { Field, FieldProps } from "formik";
 
 export const NameQuestion = (props: any) => {
-  const fieldHasError = (name: string) =>
-    props.error?.value?.[name] !== undefined;
-
   return (
     <Box
       display='flex'
@@ -19,11 +17,7 @@ export const NameQuestion = (props: any) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl
-        fullWidth
-        required={props.required}
-        error={!!props.error?.value}
-      >
+      <FormControl fullWidth required={props.required}>
         <Grid container direction='column'>
           <Grid item>
             <FormLabel required={props.required}>{props.label}</FormLabel>
@@ -36,42 +30,44 @@ export const NameQuestion = (props: any) => {
             spacing={2}
           >
             <Grid container item direction='column' xs={6}>
-              <TextField
-                type='text'
-                fullWidth
-                size='small'
-                name={props.name}
-                placeholder={"First Name"}
-                value={props.value.value.firstName}
-                onChange={(e) =>
-                  props.onSetFieldValue(props.name, {
-                    ...props.value,
-                    value: { ...props.value.value, firstName: e.target.value },
-                  })
-                }
-                required={props.required}
-                error={fieldHasError("firstName")}
-              />
-              <FormHelperText>{props?.error?.value?.firstName}</FormHelperText>
+              <Field name={`${props.name}.value.firstName`}>
+                {({ field, meta }: FieldProps) => (
+                  <>
+                    <TextField
+                      fullWidth
+                      type='text'
+                      size='small'
+                      placeholder={"First Name"}
+                      required={props.required}
+                      error={meta.touched && !!meta.error}
+                      {...field}
+                    />
+                    <FormHelperText error={meta.touched && !!meta.error}>
+                      {meta.touched && meta.error}
+                    </FormHelperText>
+                  </>
+                )}
+              </Field>
             </Grid>
             <Grid container item direction='column' xs={6}>
-              <TextField
-                type='text'
-                fullWidth
-                size='small'
-                name={props.name}
-                placeholder={"Last Name"}
-                value={props.value.value.lastName}
-                onChange={(e) =>
-                  props.onSetFieldValue(props.name, {
-                    ...props.value,
-                    value: { ...props.value.value, lastName: e.target.value },
-                  })
-                }
-                required={props.required}
-                error={fieldHasError("lastName")}
-              />
-              <FormHelperText>{props?.error?.value?.lastName}</FormHelperText>
+              <Field name={`${props.name}.value.lastName`}>
+                {({ field, meta }: FieldProps) => (
+                  <>
+                    <TextField
+                      fullWidth
+                      type='text'
+                      size='small'
+                      placeholder={"Last Name"}
+                      required={props.required}
+                      error={meta.touched && !!meta.error}
+                      {...field}
+                    />
+                    <FormHelperText error={meta.touched && !!meta.error}>
+                      {meta.touched && meta.error}
+                    </FormHelperText>
+                  </>
+                )}
+              </Field>
             </Grid>
           </Grid>
         </Grid>

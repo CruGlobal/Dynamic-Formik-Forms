@@ -2,6 +2,7 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import { Box } from "@mui/system";
 import { FormControl, FormHelperText, FormLabel, Grid } from "@mui/material";
+import { Field, FieldProps } from "formik";
 
 export const NumberQuestion = (props: any) => {
   return (
@@ -11,35 +12,31 @@ export const NumberQuestion = (props: any) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl
-        fullWidth
-        required={props.required}
-        error={props.error?.value}
-      >
-        <Grid container direction='column'>
-          <Grid item>
-            <FormLabel required={props.required}>{props.label}</FormLabel>
-          </Grid>
-          <Grid item>
-            <TextField
-              fullWidth
-              size='small'
-              type='number'
-              name={props.name}
-              value={props.value.value}
-              onChange={(e) =>
-                props.onSetFieldValue(props.name, {
-                  ...props.value,
-                  value: e.target.value,
-                })
-              }
-              required={props.required}
-              error={!!props.error?.value}
-            />
-            <FormHelperText>{props?.error?.value}</FormHelperText>
-          </Grid>
-        </Grid>
-      </FormControl>
+      <Field name={`${props.name}.value`}>
+        {({ field, meta }: FieldProps) => (
+          <FormControl
+            fullWidth
+            required={props.required}
+            error={meta.touched && !!meta.error}
+          >
+            <Grid container direction='column'>
+              <Grid item>
+                <FormLabel required={props.required}>{props.label}</FormLabel>
+              </Grid>
+              <Grid item>
+                <TextField
+                  fullWidth
+                  size='small'
+                  type='number'
+                  error={meta.touched && !!meta.error}
+                  {...field}
+                />
+                <FormHelperText>{meta.touched && meta.error}</FormHelperText>
+              </Grid>
+            </Grid>
+          </FormControl>
+        )}
+      </Field>
     </Box>
   );
 };
