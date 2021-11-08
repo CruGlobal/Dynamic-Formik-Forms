@@ -7,6 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { Field, FieldProps } from "formik";
 
 export const TextQuestion = (props: any) => {
   return (
@@ -16,36 +17,32 @@ export const TextQuestion = (props: any) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl
-        fullWidth
-        required={props.required}
-        error={!!props.error?.value}
-      >
-        <Grid container direction='column'>
-          <Grid item>
-            <FormLabel required={props.required}>{props.label}</FormLabel>
-          </Grid>
-          <Grid item>
-            <TextField
-              fullWidth
-              size='small'
-              type='text'
-              name={props.name}
-              placeholder={""}
-              value={props.value.value}
-              onChange={(e) =>
-                props.onSetFieldValue(props.name, {
-                  ...props.value,
-                  value: e.target.value,
-                })
-              }
-              required={props.required}
-              error={!!props.error?.value}
-            />
-            <FormHelperText>{props?.error?.value}</FormHelperText>
-          </Grid>
-        </Grid>
-      </FormControl>
+      <Field name={`${props.name}.value`}>
+        {({ field, meta }: FieldProps) => (
+          <FormControl
+            fullWidth
+            required={props.required}
+            error={meta.touched && !!meta.error}
+          >
+            <Grid container direction='column'>
+              <Grid item>
+                <FormLabel required={props.required}>{props.label}</FormLabel>
+              </Grid>
+              <Grid item>
+                <TextField
+                  fullWidth
+                  size='small'
+                  type='text'
+                  required={props.required}
+                  error={meta.touched && !!meta.error}
+                  {...field}
+                />
+                <FormHelperText>{props?.error?.value}</FormHelperText>
+              </Grid>
+            </Grid>
+          </FormControl>
+        )}
+      </Field>
     </Box>
   );
 };

@@ -7,6 +7,7 @@ import {
   Select,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { Field, FieldProps } from "formik";
 
 export const SelectQuestion = (props: any) => {
   return (
@@ -16,47 +17,57 @@ export const SelectQuestion = (props: any) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl
-        fullWidth
-        required={props.required}
-        error={!!props.error?.value}
-      >
-        <FormLabel>{props.label}</FormLabel>
-        <Select
-          fullWidth
-          size='small'
-          value={props.value.value}
-          required={props.required}
-          error={!!props.error?.value}
-          onChange={(e) =>
-            props.onSetFieldValue(props.name, {
-              ...props.value,
-              value: e.target.value,
-            })
-          }
-        >
-          <MenuItem disabled value={""}>
-            Choose one...
-          </MenuItem>
-          {props.content?.choices.map(
-            (
-              choice: { value: string; desc?: string; amount?: number },
-              index: number
-            ) => (
-              <MenuItem
-                key={index}
-                value={choice.value}
-                aria-label={choice.desc}
-              >
-                {`${choice.value} ${
-                  choice.amount ? `- $${choice.amount}` : ""
-                }`}
+      <Field name={`${props.name}.value`}>
+        {({ field, meta, form }: FieldProps) => (
+          <FormControl
+            fullWidth
+            required={props.required}
+            error={meta.touched && !!meta.error}
+          >
+            <FormLabel>{props.label}</FormLabel>
+            <Select
+              fullWidth
+              size='small'
+              required={props.required}
+              error={meta.touched && !!meta.error}
+              {...field}
+              onChange={(e) => {
+                const choiceIndex = props.content?.choices.findIndex(
+                  (choice: { value: string; desc?: string; amount?: number }) =>
+                    choice.value === e.target.value
+                );
+
+                form.setFieldValue(props.name, {
+                  ...props.value,
+                  value: e.target.value,
+                  amount: props.content?.choices[choiceIndex].amount ?? 0,
+                });
+              }}
+            >
+              <MenuItem disabled value={""}>
+                Choose one...
               </MenuItem>
-            )
-          )}
-        </Select>
-        <FormHelperText>{props?.error?.value}</FormHelperText>
-      </FormControl>
+              {props.content?.choices.map(
+                (
+                  choice: { value: string; desc?: string; amount?: number },
+                  index: number
+                ) => (
+                  <MenuItem
+                    key={index}
+                    value={choice.value}
+                    aria-label={choice.desc}
+                  >
+                    {`${choice.value} ${
+                      choice.amount ? `- $${choice.amount}` : ""
+                    }`}
+                  </MenuItem>
+                )
+              )}
+            </Select>
+            <FormHelperText>{meta.touched && meta.error}</FormHelperText>
+          </FormControl>
+        )}
+      </Field>
     </Box>
   );
 };

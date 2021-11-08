@@ -9,6 +9,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { Field, FieldProps } from "formik";
 
 enum SchoolYearsEnum {
   Freshman = "Freshman",
@@ -26,34 +27,34 @@ export const YearInSchoolQuestion = (props: any) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl
-        fullWidth
-        required={props.required}
-        error={!!props.error?.value}
-      >
-        <Grid container direction='column'>
-          <Grid item>
-            <FormLabel required={props.required}>{props.label}</FormLabel>
-          </Grid>
-          <Grid item>
-            <RadioGroup
-              aria-label='gender'
-              defaultValue=''
-              name='radio-buttons-group'
-            >
-              {Object.values(SchoolYearsEnum).map((year) => (
-                <FormControlLabel
-                  key={year}
-                  value={year}
-                  control={<Radio />}
-                  label={year}
-                />
-              ))}
-            </RadioGroup>
-            <FormHelperText>{props?.error?.value}</FormHelperText>
-          </Grid>
-        </Grid>
-      </FormControl>
+      <Field name={`${props.name}.value`}>
+        {({ field, meta }: FieldProps) => (
+          <FormControl
+            fullWidth
+            required={props.required}
+            error={meta.touched && !!meta.error}
+          >
+            <Grid container direction='column'>
+              <Grid item>
+                <FormLabel required={props.required}>{props.label}</FormLabel>
+              </Grid>
+              <Grid item>
+                <RadioGroup aria-label='gender' defaultValue='' {...field}>
+                  {Object.values(SchoolYearsEnum).map((year) => (
+                    <FormControlLabel
+                      key={year}
+                      value={year}
+                      control={<Radio />}
+                      label={year}
+                    />
+                  ))}
+                </RadioGroup>
+                <FormHelperText>{meta.touched && meta.error}</FormHelperText>
+              </Grid>
+            </Grid>
+          </FormControl>
+        )}
+      </Field>
     </Box>
   );
 };

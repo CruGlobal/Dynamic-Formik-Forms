@@ -9,11 +9,9 @@ import {
   InputLabel,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { Field, FieldProps } from "formik";
 
 export const AddressQuestion = (props: any) => {
-  const fieldHasError = (name: string) =>
-    props.error?.value?.[name] !== undefined;
-
   return (
     <Box
       display='flex'
@@ -21,11 +19,7 @@ export const AddressQuestion = (props: any) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl
-        fullWidth
-        required={props.required}
-        error={!!props.error?.value}
-      >
+      <FormControl fullWidth required={props.required}>
         <Grid container direction='column' spacing={1}>
           <Grid item>
             <FormLabel required={props.required}>{props.label}</FormLabel>
@@ -38,99 +32,85 @@ export const AddressQuestion = (props: any) => {
             spacing={2}
           >
             <Grid container item direction='column' xs={12}>
-              <TextField
-                type='text'
-                fullWidth
-                size='small'
-                name={props.name}
-                label={"Address Line 1"}
-                value={props.value.value.address1}
-                onChange={(e) =>
-                  props.onSetFieldValue(props.name, {
-                    ...props.value,
-                    value: { ...props.value.value, address1: e.target.value },
-                  })
-                }
-                error={fieldHasError("address1")}
-              />
+              <Field name={`${props.name}.value.address1`}>
+                {({ field, meta }: FieldProps) => (
+                  <TextField
+                    fullWidth
+                    type='text'
+                    size='small'
+                    label={"Address Line 1"}
+                    error={meta.touched && !!meta.error}
+                    {...field}
+                  />
+                )}
+              </Field>
             </Grid>
             <Grid container item direction='column' xs={12}>
-              <TextField
-                type='text'
-                fullWidth
-                size='small'
-                name={props.name}
-                label={"Address Line 2"}
-                value={props.value.value.address2}
-                onChange={(e) =>
-                  props.onSetFieldValue(props.name, {
-                    ...props.value,
-                    value: { ...props.value.value, address2: e.target.value },
-                  })
-                }
-                error={fieldHasError("address2")}
-              />
+              <Field name={`${props.name}.value.address2`}>
+                {({ field, meta }: FieldProps) => (
+                  <TextField
+                    fullWidth
+                    type='text'
+                    size='small'
+                    label={"Address Line 2"}
+                    error={meta.touched && !!meta.error}
+                    {...field}
+                  />
+                )}
+              </Field>
             </Grid>
             <Grid container item xs={12} spacing={2}>
               <Grid item xs={4}>
-                <TextField
-                  type='text'
-                  fullWidth
-                  size='small'
-                  name={props.name}
-                  label={"City"}
-                  value={props.value.value.city}
-                  onChange={(e) =>
-                    props.onSetFieldValue(props.name, {
-                      ...props.value,
-                      value: { ...props.value.value, city: e.target.value },
-                    })
-                  }
-                  error={fieldHasError("city")}
-                />
+                <Field name={`${props.name}.value.city`}>
+                  {({ field, meta }: FieldProps) => (
+                    <TextField
+                      fullWidth
+                      type='text'
+                      size='small'
+                      label={"City"}
+                      error={meta.touched && !!meta.error}
+                      {...field}
+                    />
+                  )}
+                </Field>
               </Grid>
               <Grid item xs={4}>
-                <FormControl fullWidth size='small'>
-                  <InputLabel id='state-label'>State</InputLabel>
-                  <Select
-                    fullWidth
-                    size='small'
-                    labelId='state-label'
-                    value={props.value.value.state}
-                    label='State'
-                    error={fieldHasError("state")}
-                    onChange={(e) =>
-                      props.onSetFieldValue(props.name, {
-                        ...props.value,
-                        value: { ...props.value.value, state: e.target.value },
-                      })
-                    }
-                  >
-                    <MenuItem value=''>State</MenuItem>
-                    {Object.entries(states).map(([key, value]) => (
-                      <MenuItem key={key} value={key} aria-label={value}>
-                        {value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Field name={`${props.name}.value.state`}>
+                  {({ field, meta }: FieldProps) => (
+                    <FormControl fullWidth size='small'>
+                      <InputLabel id='state-label'>State</InputLabel>
+                      <Select
+                        fullWidth
+                        size='small'
+                        labelId='state-label'
+                        label='State'
+                        error={meta.touched && !!meta.error}
+                        {...field}
+                      >
+                        <MenuItem value=''>State</MenuItem>
+                        {Object.entries(states).map(([key, value]) => (
+                          <MenuItem key={key} value={key} aria-label={value}>
+                            {value}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                </Field>
               </Grid>
               <Grid item xs={4}>
-                <TextField
-                  type='text'
-                  fullWidth
-                  size='small'
-                  name={props.name}
-                  label={"Postal Code"}
-                  value={props.value.value.zip}
-                  onChange={(e) =>
-                    props.onSetFieldValue(props.name, {
-                      ...props.value,
-                      value: { ...props.value.value, zip: e.target.value },
-                    })
-                  }
-                  error={fieldHasError("zip")}
-                />
+                <Field name={`${props.name}.value.zip`}>
+                  {({ field, meta }: FieldProps) => (
+                    <TextField
+                      fullWidth
+                      type='text'
+                      size='small'
+                      label={"Postal Code"}
+                      error={meta.touched && !!meta.error}
+                      {...field}
+                    />
+                  )}
+                </Field>
               </Grid>
             </Grid>
           </Grid>
