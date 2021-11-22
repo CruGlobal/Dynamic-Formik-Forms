@@ -14,17 +14,122 @@ import { PhoneQuestion } from "../Fields/PhoneQuestion";
 import { YearInSchoolQuestion } from "../Fields/YearInSchoolQuestion";
 import { AddressQuestion } from "../Fields/AddressQuestion";
 
+//#region Types
+interface AnswerBlock {
+  adminOnly?: boolean;
+  id: string;
+  pageId: string;
+  title: string;
+  exportField?: string | null;
+  expenseType?: string | null;
+  endDateBlockId?: string | null;
+  startDateBlockId?: string | null;
+  exportFieldTitle?: string | null;
+  type: AnswerTypesEnum;
+  tag?: string | null;
+  required: boolean;
+  position: number;
+  profileType: string | null;
+  registrantTypes: RegistrantType[];
+  rules: RuleType[];
+  content: AnswerBlockContentType;
+}
+
+interface AnswerBlockContentType {
+  default: string;
+  forceSelectionRuleOperand: "AND" | "OR";
+  forceSelections: {};
+  ruleoperand: "AND" | "OR";
+  choices?: AnswerBlockChoiceType[];
+}
+
+interface AnswerBlockChoiceType {
+  value: string;
+  desc: string;
+  amount?: number;
+}
+
+interface RegistrantType {
+  acceptChecks: boolean;
+  acceptCreditCards: boolean;
+  acceptPayOnSite: boolean;
+  acceptScholarships: boolean;
+  acceptTransfers: boolean;
+  allowGroupRegistration: boolean;
+  allowedRegistrantTypeSet: null;
+  availableSlots: number;
+  calculatedCurrentCost: number;
+  conferenceId: string;
+  cost: number;
+  createdTimestamp: string | null;
+  customConfirmationEmailText: string | null;
+  defaultTypeKey: string | null;
+  description: string | null;
+  earlyRegistrationDiscounts: [];
+  eform: boolean;
+  familyStatus: string;
+  groupSubRegistrantType: boolean;
+  hidden: boolean;
+  id: string;
+  lastUpdaedTimestamp: string;
+  minimumDesposit: number | null;
+  name: string;
+  numberSlotsLimit: number;
+  position: number;
+  registrationCompletedRedirect: string | null;
+  useLimit: boolean;
+}
+
+interface RuleType {
+  id: string;
+  blockId: string;
+  parentBlockId: string;
+  operator: ">" | "=";
+  value: string;
+  position: number;
+}
+
+export interface QuestionBlockComponentProps {
+  label: string;
+  name: string;
+  content: AnswerBlockContentType;
+  required: boolean;
+}
+
+enum AnswerTypesEnum {
+  AddressQuestion = "addressQuestion",
+  // CampusQuestion = "campusQuestion",
+  // CheckboxQuestion = "checkboxQuestion",
+  // DateQuestion = "dateQuestion",
+  EmailQuestion = "emailQuestion",
+  GenderQuestion = "genderQuestion",
+  NameQuestion = "nameQuestion",
+  NumberQuestion = "numberQuestion",
+  PhoneQuestion = "phoneQuestion",
+  // RadioQuestion = "radioQuestion",
+  SelectQuestion = "selectQuestion",
+  TextQuestion = "textQuestion",
+  TextareaQuestion = "textareaQuestion",
+  YearInSchoolQuestion = "yearInSchoolQuestion",
+}
+//#endregion
+
 //#region JSON Data
-const blocks = [
+const blocks: AnswerBlock[] = [
   {
     id: "26c09fa0-f62e-4dc4-a568-b061da6fdb09",
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Email",
     exportFieldTitle: null,
-    type: "emailQuestion",
+    type: AnswerTypesEnum.EmailQuestion,
     required: false,
     position: 0,
-    content: "",
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
     profileType: null,
     registrantTypes: [],
     rules: [],
@@ -34,10 +139,15 @@ const blocks = [
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Name",
     exportFieldTitle: null,
-    type: "nameQuestion",
+    type: AnswerTypesEnum.NameQuestion,
     required: true,
     position: 1,
-    content: "",
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
     profileType: "NAME",
     registrantTypes: [],
     rules: [],
@@ -47,10 +157,15 @@ const blocks = [
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Number",
     exportFieldTitle: null,
-    type: "numberQuestion",
+    type: AnswerTypesEnum.NumberQuestion,
     required: false,
     position: 2,
-    content: "",
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
     profileType: null,
     registrantTypes: [],
     rules: [],
@@ -60,11 +175,14 @@ const blocks = [
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Dropdown Question",
     exportFieldTitle: null,
-    type: "selectQuestion",
+    type: AnswerTypesEnum.SelectQuestion,
     required: true,
     position: 3,
     content: {
-      // default: "option 1",
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
       choices: [
         { value: "option 1", desc: "", amount: 5 },
         { value: "option 2", desc: "This is a description for value 2" },
@@ -87,11 +205,13 @@ const blocks = [
     id: "9a222b0a-ff34-44e8-8916-fdfad7260a25",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: null,
+    exportFieldTitle: null,
     registrantTypes: [],
     required: false,
+    position: 4,
     rules: [],
     title: "Text Question",
-    type: "textQuestion",
+    type: AnswerTypesEnum.TextQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -103,11 +223,13 @@ const blocks = [
     id: "fb2a2502-31f8-4510-a077-9b7f41dd5c25",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: null,
+    exportFieldTitle: null,
     registrantTypes: [],
     required: true,
+    position: 5,
     rules: [],
     title: "TextArea",
-    type: "textareaQuestion",
+    type: AnswerTypesEnum.TextareaQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -120,10 +242,12 @@ const blocks = [
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: "GENDER",
     registrantTypes: [],
+    exportFieldTitle: null,
     required: false,
+    position: 6,
     rules: [],
     title: "Gender Question",
-    type: "genderQuestion",
+    type: AnswerTypesEnum.GenderQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -136,20 +260,30 @@ const blocks = [
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: "PHONE",
     registrantTypes: [],
+    exportFieldTitle: null,
     required: true,
+    position: 7,
     rules: [],
     title: "Telephone",
-    type: "phoneQuestion",
+    type: AnswerTypesEnum.PhoneQuestion,
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
   },
   {
     id: "8f877b39-2653-484b-beb7-30645a7d79d1",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: "YEAR_IN_SCHOOL",
     registrantTypes: [],
+    exportFieldTitle: null,
     required: false,
+    position: 8,
     rules: [],
     title: "Year in School",
-    type: "yearInSchoolQuestion",
+    type: AnswerTypesEnum.YearInSchoolQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -162,10 +296,12 @@ const blocks = [
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: "ADDRESS",
     registrantTypes: [],
+    exportFieldTitle: null,
     required: true,
+    position: 9,
     rules: [],
     title: "Address Question",
-    type: "addressQuestion",
+    type: AnswerTypesEnum.AddressQuestion,
     content: {
       default: "",
       ruleoperand: "AND",
@@ -182,26 +318,13 @@ const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 // grabbed from https://stackoverflow.com/a/2577239
 const zipCodeRegex = RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
 
-enum QuestionTypes {
-  addressQuestion,
-  nameQuestion,
-  emailQuestion,
-  numberQuestion,
-  selectQuestion,
-  textQuestion,
-  textareaQuestion,
-  genderQuestion,
-  phoneQuestion,
-  yearInSchoolQuestion,
-}
-
 const createYupSchema = (schema: any, config: any = {}) => {
   // console.log(config);
   const requiredMessage = "This field is required";
   const { id, type, required } = config;
   let blockType = () => {
     switch (type) {
-      case "addressQuestion":
+      case AnswerTypesEnum.AddressQuestion:
         return yup.object({
           address1: required ? yup.string().required() : yup.string(),
           address2: yup.string().notRequired(),
@@ -211,7 +334,7 @@ const createYupSchema = (schema: any, config: any = {}) => {
             ? yup.string().matches(zipCodeRegex).required()
             : yup.string().matches(zipCodeRegex),
         });
-      case "nameQuestion":
+      case AnswerTypesEnum.NameQuestion:
         return yup.object({
           firstName: required
             ? yup.string().required(requiredMessage)
@@ -220,7 +343,7 @@ const createYupSchema = (schema: any, config: any = {}) => {
             ? yup.string().required(requiredMessage)
             : yup.string(),
         });
-      case "emailQuestion":
+      case AnswerTypesEnum.EmailQuestion:
         return required
           ? yup
               .string()
@@ -229,27 +352,27 @@ const createYupSchema = (schema: any, config: any = {}) => {
           : yup
               .string()
               .email("Please enter a valid email such as: example@domain.com");
-      case "numberQuestion":
+      case AnswerTypesEnum.NumberQuestion:
         return required ? yup.number().required(requiredMessage) : yup.number();
-      case "phoneQuestion":
+      case AnswerTypesEnum.PhoneQuestion:
         return required
           ? yup
               .string()
               .matches(phoneRegex, "Invalid phone number")
               .required(requiredMessage)
           : yup.string().matches(phoneRegex, "Invalid phone number");
-      case "textQuestion":
-      case "textareaQuestion":
-      case "selectQuestion":
-      case "genderQuestion":
-      case "yearInSchoolQuestion":
+      case AnswerTypesEnum.GenderQuestion:
+      case AnswerTypesEnum.TextQuestion:
+      case AnswerTypesEnum.TextareaQuestion:
+      case AnswerTypesEnum.SelectQuestion:
+      case AnswerTypesEnum.YearInSchoolQuestion:
         return required ? yup.string().required(requiredMessage) : yup.string();
       default:
         return required ? yup.string().required(requiredMessage) : yup.string();
     }
   };
 
-  if (Object.keys(QuestionTypes).indexOf(type) === -1) {
+  if (Object.values(AnswerTypesEnum).indexOf(type) === -1) {
     return schema;
   }
 
@@ -281,13 +404,13 @@ const onSubmit = (attributes: FormSchemaType) => {
 
 const initialFormValues: FormSchemaType = {};
 
-blocks.forEach((block: any) => {
+blocks.forEach((block: AnswerBlock) => {
   const getBlockValue = () => {
     switch (block.type) {
-      case "addressQuestion":
+      case AnswerTypesEnum.AddressQuestion:
         return {
           amount: 0,
-          blockId: "blockId",
+          blockId: block.id,
           id: block.id,
           registrantId: "registrantId",
           value: {
@@ -298,10 +421,10 @@ blocks.forEach((block: any) => {
             zip: "",
           },
         };
-      case "nameQuestion":
+      case AnswerTypesEnum.NameQuestion:
         return {
           amount: 0,
-          blockId: "blockId",
+          blockId: block.id,
           id: block.id,
           registrantId: "registrantId",
           value: {
@@ -309,17 +432,17 @@ blocks.forEach((block: any) => {
             lastName: "",
           },
         };
-      case "emailQuestion":
-      case "numberQuestion":
-      case "selectQuestion":
-      case "textQuestion":
-      case "textareaQuestion":
-      case "genderQuestion":
-      case "phoneQuestion":
-      case "yearInSchoolQuestion":
+      case AnswerTypesEnum.EmailQuestion:
+      case AnswerTypesEnum.GenderQuestion:
+      case AnswerTypesEnum.NumberQuestion:
+      case AnswerTypesEnum.PhoneQuestion:
+      case AnswerTypesEnum.SelectQuestion:
+      case AnswerTypesEnum.TextareaQuestion:
+      case AnswerTypesEnum.TextQuestion:
+      case AnswerTypesEnum.YearInSchoolQuestion:
         return {
           amount: 0,
-          blockId: "blockId",
+          blockId: block.id,
           id: block.id,
           registrantId: "registrantId",
           value: block.content?.default ?? "",
@@ -333,21 +456,23 @@ blocks.forEach((block: any) => {
 export const ConferenceForm: React.FC = () => {
   //#region Form Elements Creation
   const renderFormElements = (props: FormikProps<any>): any => {
-    return blocks.map((block: any, index) => {
+    console.log(props.errors);
+    return blocks.map((block: AnswerBlock, index) => {
       const fieldMap: any = {
-        addressQuestion: AddressQuestion,
-        nameQuestion: NameQuestion,
-        emailQuestion: EmailQuestion,
-        numberQuestion: NumberQuestion,
-        selectQuestion: SelectQuestion,
-        textQuestion: TextQuestion,
-        textareaQuestion: TextAreaQuestion,
-        genderQuestion: GenderQuestion,
-        phoneQuestion: PhoneQuestion,
-        yearInSchoolQuestion: YearInSchoolQuestion,
+        [AnswerTypesEnum.AddressQuestion]: AddressQuestion,
+        [AnswerTypesEnum.NameQuestion]: NameQuestion,
+        [AnswerTypesEnum.EmailQuestion]: EmailQuestion,
+        [AnswerTypesEnum.NumberQuestion]: NumberQuestion,
+        [AnswerTypesEnum.SelectQuestion]: SelectQuestion,
+        [AnswerTypesEnum.TextQuestion]: TextQuestion,
+        [AnswerTypesEnum.TextareaQuestion]: TextAreaQuestion,
+        [AnswerTypesEnum.GenderQuestion]: GenderQuestion,
+        [AnswerTypesEnum.PhoneQuestion]: PhoneQuestion,
+        [AnswerTypesEnum.YearInSchoolQuestion]: YearInSchoolQuestion,
       };
 
-      if (Object.keys(QuestionTypes).indexOf(block.type) === -1) return null;
+      if (Object.values(AnswerTypesEnum).indexOf(block.type) === -1)
+        return null;
 
       const Component = fieldMap[block.type];
 
@@ -394,16 +519,12 @@ export const ConferenceForm: React.FC = () => {
               </Grid>
               <Grid container item xs={9} justifyContent='center'>
                 <Button
-                  disabled={
-                    !props.isValid || props.isValidating || !props.dirty
-                  }
+                  disabled={!props.isValid || props.isValidating}
                   type='submit'
                   fullWidth
                   variant='contained'
                   color='success'
-                  aria-disabled={
-                    !props.isValid || props.isValidating || !props.dirty
-                  }
+                  aria-disabled={!props.isValid || props.isValidating}
                 >
                   Submit
                 </Button>
