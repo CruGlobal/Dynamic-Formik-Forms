@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Field, FieldProps } from "formik";
+import { QuestionBlockComponentProps } from "../Formik/Formik";
 
 enum SchoolYearsEnum {
   Freshman = "Freshman",
@@ -19,7 +20,7 @@ enum SchoolYearsEnum {
   GraduateStudent = "Graduate Student",
 }
 
-export const YearInSchoolQuestion = (props: any) => {
+export const YearInSchoolQuestion = (props: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'

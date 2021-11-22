@@ -10,8 +10,9 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Field, FieldProps } from "formik";
+import { QuestionBlockComponentProps } from "../Formik/Formik";
 
-export const GenderQuestion = (props: any) => {
+export const GenderQuestion = (props: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'

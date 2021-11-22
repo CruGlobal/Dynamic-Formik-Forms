@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { Field, FieldProps } from "formik";
+import { QuestionBlockComponentProps } from "../Formik/Formik";
 
-export const TextQuestion = (props: any) => {
+export const TextQuestion = (props: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -37,7 +38,7 @@ export const TextQuestion = (props: any) => {
                   error={meta.touched && !!meta.error}
                   {...field}
                 />
-                <FormHelperText>{props?.error?.value}</FormHelperText>
+                <FormHelperText>{meta.touched && meta.error}</FormHelperText>
               </Grid>
             </Grid>
           </FormControl>
