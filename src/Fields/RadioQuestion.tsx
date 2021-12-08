@@ -34,8 +34,9 @@ export const RadioQuestion = (props: QuestionBlockComponentProps) => {
               <Grid item>
                 <RadioGroup {...field}>
                   {props.content.choices &&
-                    props.content.choices.map((choice) => (
+                    props.content.choices.map((choice, index) => (
                       <FormControlLabel
+                        key={index}
                         value={choice.value}
                         control={<Radio />}
                         label={`${choice.value} ${
