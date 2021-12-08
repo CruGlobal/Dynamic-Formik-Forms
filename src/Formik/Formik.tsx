@@ -15,7 +15,7 @@ import { YearInSchoolQuestion } from "../Fields/YearInSchoolQuestion";
 import { AddressQuestion } from "../Fields/AddressQuestion";
 
 //#region Types
-interface AnswerBlock {
+export interface AnswerBlock {
   adminOnly?: boolean;
   id: string;
   pageId: string;
@@ -30,7 +30,7 @@ interface AnswerBlock {
   required: boolean;
   position: number;
   profileType: string | null;
-  registrantTypes: RegistrantType[];
+  registrantTypes: string[];
   rules: RuleType[];
   content: AnswerBlockContentType;
 }
@@ -43,13 +43,14 @@ interface AnswerBlockContentType {
   choices?: AnswerBlockChoiceType[];
 }
 
-interface AnswerBlockChoiceType {
+export interface AnswerBlockChoiceType {
   value: string;
   desc: string;
   amount?: number;
+  operand?: "AND" | "OR";
 }
 
-interface RegistrantType {
+export interface RegistrantType {
   acceptChecks: boolean;
   acceptCreditCards: boolean;
   acceptPayOnSite: boolean;
@@ -57,6 +58,7 @@ interface RegistrantType {
   acceptTransfers: boolean;
   allowGroupRegistration: boolean;
   allowedRegistrantTypeSet: null;
+  answers: RegistrantAnswerType[];
   availableSlots: number;
   calculatedCurrentCost: number;
   conferenceId: string;
@@ -77,16 +79,27 @@ interface RegistrantType {
   numberSlotsLimit: number;
   position: number;
   registrationCompletedRedirect: string | null;
+  registrantTypeId: string;
   useLimit: boolean;
 }
 
-interface RuleType {
-  id: string;
+interface RegistrantAnswerType {
+  amount: number;
   blockId: string;
-  parentBlockId: string;
-  operator: ">" | "=";
-  value: string;
+  id: string;
+  lastUpdatedTimestamp: string;
+  value: string | Record<string, string>;
+}
+
+export interface RuleType {
+  blockEntityOption: string;
+  blockId: string;
+  id: string;
+  operator: ">" | "=" | "!=" | "<";
   position: number;
+  parentBlockId: string;
+  ruleType: RuleTypeConstantsEnum | null;
+  value: string;
 }
 
 export interface QuestionBlockComponentProps {
@@ -96,7 +109,7 @@ export interface QuestionBlockComponentProps {
   required: boolean;
 }
 
-enum AnswerTypesEnum {
+export enum AnswerTypesEnum {
   AddressQuestion = "addressQuestion",
   // CampusQuestion = "campusQuestion",
   // CheckboxQuestion = "checkboxQuestion",
@@ -111,6 +124,12 @@ enum AnswerTypesEnum {
   TextQuestion = "textQuestion",
   TextareaQuestion = "textareaQuestion",
   YearInSchoolQuestion = "yearInSchoolQuestion",
+}
+
+export enum RuleTypeConstantsEnum {
+  SHOW_QUESTION = "SHOW_QUESTION",
+  FORCE_SELECTION = "FORCE_SELECTION",
+  SHOW_OPTION = "SHOW_OPTION",
 }
 //#endregion
 
@@ -192,12 +211,14 @@ const blocks: AnswerBlock[] = [
     registrantTypes: [],
     rules: [
       {
+        blockEntityOption: "",
         id: "e211fa0b-2b23-41e1-afc4-a9a645d97f59",
         blockId: "2764e22b-8623-4c2b-81e5-f625574521f2",
         parentBlockId: "0556295a-3c4d-45b2-a00e-42b1fe199421",
         operator: ">",
         value: "12",
         position: 0,
+        ruleType: RuleTypeConstantsEnum.SHOW_QUESTION,
       },
     ],
   },
