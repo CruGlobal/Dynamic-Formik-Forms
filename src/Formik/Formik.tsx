@@ -13,6 +13,7 @@ import { GenderQuestion } from "../Fields/GenderQuestion";
 import { PhoneQuestion } from "../Fields/PhoneQuestion";
 import { YearInSchoolQuestion } from "../Fields/YearInSchoolQuestion";
 import { AddressQuestion } from "../Fields/AddressQuestion";
+import { CheckboxQuestion } from "../Fields/CheckboxQuestion";
 
 //#region Types
 export interface AnswerBlock {
@@ -36,7 +37,7 @@ export interface AnswerBlock {
 }
 
 interface AnswerBlockContentType {
-  default: string;
+  default: string | {};
   forceSelectionRuleOperand: "AND" | "OR";
   forceSelections: {};
   ruleoperand: "AND" | "OR";
@@ -112,7 +113,7 @@ export interface QuestionBlockComponentProps {
 export enum AnswerTypesEnum {
   AddressQuestion = "addressQuestion",
   // CampusQuestion = "campusQuestion",
-  // CheckboxQuestion = "checkboxQuestion",
+  CheckboxQuestion = "checkboxQuestion",
   // DateQuestion = "dateQuestion",
   EmailQuestion = "emailQuestion",
   GenderQuestion = "genderQuestion",
@@ -330,6 +331,33 @@ const blocks: AnswerBlock[] = [
       forceSelectionRuleOperand: "AND",
     },
   },
+  {
+    id: "cc0850e7-6c0f-42ab-841b-09696229f360",
+    pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
+    profileType: null,
+    registrantTypes: [],
+    required: false,
+    position: 10,
+    rules: [],
+    title: "Checkbox Question",
+    type: AnswerTypesEnum.CheckboxQuestion,
+    content: {
+      choices: [
+        {
+          value: "check1",
+          desc: "",
+          operand: "OR",
+          // ammount: 5
+        },
+        { value: "check2", desc: "", operand: "OR" },
+        { value: "check3", desc: "", operand: "OR" },
+      ],
+      default: {},
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      ruleoperand: "AND",
+    },
+  },
 ];
 //#endregion
 
@@ -339,10 +367,11 @@ const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 // grabbed from https://stackoverflow.com/a/2577239
 const zipCodeRegex = RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
 
-const createYupSchema = (schema: any, config: any = {}) => {
+const createYupSchema = (schema: any, config: AnswerBlock) => {
   // console.log(config);
   const requiredMessage = "This field is required";
-  const { id, type, required } = config;
+  const { id, type, required, content } = config;
+
   let blockType = () => {
     switch (type) {
       case AnswerTypesEnum.AddressQuestion:
@@ -382,6 +411,13 @@ const createYupSchema = (schema: any, config: any = {}) => {
               .matches(phoneRegex, "Invalid phone number")
               .required(requiredMessage)
           : yup.string().matches(phoneRegex, "Invalid phone number");
+      case AnswerTypesEnum.CheckboxQuestion:
+        const values =
+          content.choices &&
+          content.choices.reduce((acc, choice) => {
+            return { ...acc, [choice.value]: yup.boolean() };
+          }, {});
+        return required ? yup.object(values).required() : yup.object(values);
       case AnswerTypesEnum.GenderQuestion:
       case AnswerTypesEnum.TextQuestion:
       case AnswerTypesEnum.TextareaQuestion:
@@ -404,12 +440,7 @@ const createYupSchema = (schema: any, config: any = {}) => {
     registrantId: yup.string().required(),
     value: blockType(),
   });
-  // rules.forEach((rule: any) => {
-  //   if (!validator["min"]) {
-  //     return;
-  //   }
-  //   // validator = validator[rule];
-  // });
+
   schema[id] = validator;
   return schema;
 };
@@ -453,6 +484,19 @@ blocks.forEach((block: AnswerBlock) => {
             lastName: "",
           },
         };
+      case AnswerTypesEnum.CheckboxQuestion:
+        return {
+          amount: 0,
+          blockId: block.id,
+          id: block.id,
+          registrantId: "registrantId",
+          value:
+            (block.content.choices &&
+              block.content.choices.reduce((acc, choice) => {
+                return { ...acc, [choice.value]: false };
+              }, {})) ??
+            {},
+        };
       case AnswerTypesEnum.EmailQuestion:
       case AnswerTypesEnum.GenderQuestion:
       case AnswerTypesEnum.NumberQuestion:
@@ -477,7 +521,6 @@ blocks.forEach((block: AnswerBlock) => {
 export const ConferenceForm: React.FC = () => {
   //#region Form Elements Creation
   const renderFormElements = (props: FormikProps<any>): any => {
-    console.log(props.errors);
     return blocks.map((block: AnswerBlock, index) => {
       const fieldMap: any = {
         [AnswerTypesEnum.AddressQuestion]: AddressQuestion,
@@ -490,6 +533,7 @@ export const ConferenceForm: React.FC = () => {
         [AnswerTypesEnum.GenderQuestion]: GenderQuestion,
         [AnswerTypesEnum.PhoneQuestion]: PhoneQuestion,
         [AnswerTypesEnum.YearInSchoolQuestion]: YearInSchoolQuestion,
+        [AnswerTypesEnum.CheckboxQuestion]: CheckboxQuestion,
       };
 
       if (Object.values(AnswerTypesEnum).indexOf(block.type) === -1)
