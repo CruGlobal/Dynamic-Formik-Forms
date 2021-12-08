@@ -1,7 +1,7 @@
 import {
   AnswerBlock,
   AnswerBlockChoiceType,
-  // AnswerTypesEnum,
+  AnswerTypesEnum,
   RegistrantType,
   RuleType,
   RuleTypeConstantsEnum,
@@ -173,26 +173,26 @@ const isBlockInRegistrantType = (
   registrant: RegistrantType
 ) => !block.registrantTypes.includes(registrant.registrantTypeId);
 
-// const isAnyChoiceVisible = (block: AnswerBlock, registrant: RegistrantType) => {
-//   if (
-//     block.type !== AnswerTypesEnum.CheckboxQuestion &&
-//     block.type !== AnswerTypesEnum.SelectQuestion &&
-//     block.type !== AnswerTypesEnum.RadioQuestion
-//   ) {
-//     return true;
-//   }
-//   // If a block has no content choices because the user forgot to add them, automatically return false.
-//   if (!block.content.choices) {
-//     return false;
-//   }
+const isAnyChoiceVisible = (block: AnswerBlock, registrant: RegistrantType) => {
+  if (
+    block.type !== AnswerTypesEnum.CheckboxQuestion &&
+    block.type !== AnswerTypesEnum.SelectQuestion &&
+    block.type !== AnswerTypesEnum.RadioQuestion
+  ) {
+    return true;
+  }
+  // If a block has no content choices because the user forgot to add them, automatically return false.
+  if (!block.content.choices) {
+    return false;
+  }
 
-//   for (let i = 0, len = block.content.choices.length; i < len; i++) {
-//     if (isChoiceVisible(block, block.content.choices[i], registrant)) {
-//       return true;
-//     }
-//   }
-//   return false;
-// };
+  for (let i = 0, len = block.content.choices.length; i < len; i++) {
+    if (isChoiceVisible(block, block.content.choices[i], registrant)) {
+      return true;
+    }
+  }
+  return false;
+};
 
 const isBlockVisible = (
   block: AnswerBlock,
@@ -206,8 +206,8 @@ const isBlockVisible = (
       registrant,
       RuleTypeConstantsEnum.SHOW_QUESTION
     ) &&
-    isBlockInRegistrantType(block, registrant);
-  // && isAnyChoiceVisible(block, registrant);
+    isBlockInRegistrantType(block, registrant) &&
+    isAnyChoiceVisible(block, registrant);
 
   return block.adminOnly && !isAdmin ? false : visible;
 };

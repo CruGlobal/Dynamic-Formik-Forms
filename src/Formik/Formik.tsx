@@ -14,6 +14,7 @@ import { PhoneQuestion } from "../Fields/PhoneQuestion";
 import { YearInSchoolQuestion } from "../Fields/YearInSchoolQuestion";
 import { AddressQuestion } from "../Fields/AddressQuestion";
 import { CheckboxQuestion } from "../Fields/CheckboxQuestion";
+import { RadioQuestion } from "../Fields/RadioQuestion";
 
 //#region Types
 export interface AnswerBlock {
@@ -42,6 +43,7 @@ interface AnswerBlockContentType {
   forceSelections: {};
   ruleoperand: "AND" | "OR";
   choices?: AnswerBlockChoiceType[];
+  otherOption?: Record<string, boolean>;
 }
 
 export interface AnswerBlockChoiceType {
@@ -120,7 +122,7 @@ export enum AnswerTypesEnum {
   NameQuestion = "nameQuestion",
   NumberQuestion = "numberQuestion",
   PhoneQuestion = "phoneQuestion",
-  // RadioQuestion = "radioQuestion",
+  RadioQuestion = "radioQuestion",
   SelectQuestion = "selectQuestion",
   TextQuestion = "textQuestion",
   TextareaQuestion = "textareaQuestion",
@@ -358,6 +360,36 @@ const blocks: AnswerBlock[] = [
       ruleoperand: "AND",
     },
   },
+  {
+    id: "6fecd777-47b4-4579-afbc-5e337ec844ea",
+    pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
+    profileType: null,
+    registrantTypes: [],
+    required: false,
+    position: 11,
+    rules: [],
+    title: "Multiple Choice Question",
+    type: AnswerTypesEnum.RadioQuestion,
+    content: {
+      choices: [
+        {
+          value: "blue",
+          desc: "",
+          operand: "OR",
+        },
+        {
+          value: "red",
+          desc: "",
+          operand: "OR",
+        },
+      ],
+      default: {},
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      otherOption: { enabled: false },
+      ruleoperand: "AND",
+    },
+  },
 ];
 //#endregion
 
@@ -412,12 +444,15 @@ const createYupSchema = (schema: any, config: AnswerBlock) => {
               .required(requiredMessage)
           : yup.string().matches(phoneRegex, "Invalid phone number");
       case AnswerTypesEnum.CheckboxQuestion:
-        const values =
+        const checkboxValues =
           content.choices &&
           content.choices.reduce((acc, choice) => {
             return { ...acc, [choice.value]: yup.boolean() };
           }, {});
-        return required ? yup.object(values).required() : yup.object(values);
+        return required
+          ? yup.object(checkboxValues).required()
+          : yup.object(checkboxValues);
+      case AnswerTypesEnum.RadioQuestion:
       case AnswerTypesEnum.GenderQuestion:
       case AnswerTypesEnum.TextQuestion:
       case AnswerTypesEnum.TextareaQuestion:
@@ -501,6 +536,7 @@ blocks.forEach((block: AnswerBlock) => {
       case AnswerTypesEnum.GenderQuestion:
       case AnswerTypesEnum.NumberQuestion:
       case AnswerTypesEnum.PhoneQuestion:
+      case AnswerTypesEnum.RadioQuestion:
       case AnswerTypesEnum.SelectQuestion:
       case AnswerTypesEnum.TextareaQuestion:
       case AnswerTypesEnum.TextQuestion:
@@ -534,6 +570,7 @@ export const ConferenceForm: React.FC = () => {
         [AnswerTypesEnum.PhoneQuestion]: PhoneQuestion,
         [AnswerTypesEnum.YearInSchoolQuestion]: YearInSchoolQuestion,
         [AnswerTypesEnum.CheckboxQuestion]: CheckboxQuestion,
+        [AnswerTypesEnum.RadioQuestion]: RadioQuestion,
       };
 
       if (Object.values(AnswerTypesEnum).indexOf(block.type) === -1)
