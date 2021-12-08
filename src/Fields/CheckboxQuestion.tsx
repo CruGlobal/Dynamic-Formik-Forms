@@ -42,9 +42,8 @@ export const CheckboxQuestion = (props: QuestionBlockComponentProps) => {
                                 ...form.values[props.name].value,
                                 [props.content.choices[index].value]:
                                   !form.values[props.name].value[choice.value],
-                                amount:
-                                  props.content?.choices[index].amount ?? 0,
                               },
+                              amount: props.content?.choices[index].amount ?? 0,
                             });
                           }
                         }}
