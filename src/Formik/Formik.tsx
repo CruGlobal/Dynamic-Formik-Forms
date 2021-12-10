@@ -5,7 +5,7 @@ import { NameQuestion } from "../Fields/NameQuestion";
 import { EmailQuestion } from "../Fields/EmailQuestion";
 import { NumberQuestion } from "../Fields/NumberQuestion";
 import { SelectQuestion } from "../Fields/SelectQuestion";
-import { Button, FormHelperText, Grid } from "@mui/material";
+import { Button, FormHelperText, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { TextQuestion } from "../Fields/TextQuestion";
 import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
@@ -15,10 +15,11 @@ import { YearInSchoolQuestion } from "../Fields/YearInSchoolQuestion";
 import { AddressQuestion } from "../Fields/AddressQuestion";
 import { CheckboxQuestion } from "../Fields/CheckboxQuestion";
 import { RadioQuestion } from "../Fields/RadioQuestion";
+import { DateQuestion } from "../Fields/DateQuestion";
 
 //#region Types
 export interface AnswerBlock {
-  adminOnly?: boolean;
+  adminOnly: boolean;
   id: string;
   pageId: string;
   title: string;
@@ -44,6 +45,7 @@ interface AnswerBlockContentType {
   ruleoperand: "AND" | "OR";
   choices?: AnswerBlockChoiceType[];
   otherOption?: Record<string, boolean>;
+  range?: { min: string; max: string };
 }
 
 export interface AnswerBlockChoiceType {
@@ -116,7 +118,7 @@ export enum AnswerTypesEnum {
   AddressQuestion = "addressQuestion",
   // CampusQuestion = "campusQuestion",
   CheckboxQuestion = "checkboxQuestion",
-  // DateQuestion = "dateQuestion",
+  DateQuestion = "dateQuestion",
   EmailQuestion = "emailQuestion",
   GenderQuestion = "genderQuestion",
   NameQuestion = "nameQuestion",
@@ -139,6 +141,7 @@ export enum RuleTypeConstantsEnum {
 //#region JSON Data
 const blocks: AnswerBlock[] = [
   {
+    adminOnly: false,
     id: "26c09fa0-f62e-4dc4-a568-b061da6fdb09",
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Email",
@@ -157,6 +160,7 @@ const blocks: AnswerBlock[] = [
     rules: [],
   },
   {
+    adminOnly: false,
     id: "122a15bf-0608-4813-834a-0d31a8c44c64",
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Name",
@@ -175,6 +179,7 @@ const blocks: AnswerBlock[] = [
     rules: [],
   },
   {
+    adminOnly: false,
     id: "0556295a-3c4d-45b2-a00e-42b1fe199421",
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Number",
@@ -193,6 +198,7 @@ const blocks: AnswerBlock[] = [
     rules: [],
   },
   {
+    adminOnly: false,
     id: "2764e22b-8623-4c2b-81e5-f625574521f2",
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Dropdown Question",
@@ -226,6 +232,7 @@ const blocks: AnswerBlock[] = [
     ],
   },
   {
+    adminOnly: false,
     id: "9a222b0a-ff34-44e8-8916-fdfad7260a25",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: null,
@@ -244,6 +251,7 @@ const blocks: AnswerBlock[] = [
     },
   },
   {
+    adminOnly: false,
     id: "fb2a2502-31f8-4510-a077-9b7f41dd5c25",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: null,
@@ -262,6 +270,7 @@ const blocks: AnswerBlock[] = [
     },
   },
   {
+    adminOnly: false,
     id: "8889a73f-f658-4682-bfdf-5507e533c5f2",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: "GENDER",
@@ -280,6 +289,7 @@ const blocks: AnswerBlock[] = [
     },
   },
   {
+    adminOnly: false,
     id: "d4186c2b-b5e7-4a28-b188-47b9d3077561",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: "PHONE",
@@ -298,6 +308,7 @@ const blocks: AnswerBlock[] = [
     },
   },
   {
+    adminOnly: false,
     id: "8f877b39-2653-484b-beb7-30645a7d79d1",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: "YEAR_IN_SCHOOL",
@@ -316,6 +327,7 @@ const blocks: AnswerBlock[] = [
     },
   },
   {
+    adminOnly: false,
     id: "c703c972-8cc8-46d1-bafc-b34b6e967012",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: "ADDRESS",
@@ -334,6 +346,7 @@ const blocks: AnswerBlock[] = [
     },
   },
   {
+    adminOnly: false,
     id: "cc0850e7-6c0f-42ab-841b-09696229f360",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: null,
@@ -361,6 +374,7 @@ const blocks: AnswerBlock[] = [
     },
   },
   {
+    adminOnly: false,
     id: "6fecd777-47b4-4579-afbc-5e337ec844ea",
     pageId: "845e1657-04c2-4044-b5d0-ee0e4b1abbc7",
     profileType: null,
@@ -389,6 +403,30 @@ const blocks: AnswerBlock[] = [
       otherOption: { enabled: false },
       ruleoperand: "AND",
     },
+  },
+  {
+    adminOnly: false,
+    content: {
+      default: "",
+      forceSelectionRuleOperand: "AND",
+      forceSelections: {},
+      range: { min: "2021-12-13", max: "2021-12-30" },
+      ruleoperand: "AND",
+    },
+    endDateBlockId: null,
+    expenseType: null,
+    exportFieldTitle: null,
+    id: "58ed8507-9a43-4b0c-8920-c7975a41f82b",
+    pageId: "f28e7c56-afea-4b59-82eb-925f23c7716e",
+    position: 12,
+    profileType: null,
+    registrantTypes: [],
+    required: false,
+    rules: [],
+    startDateBlockId: null,
+    tag: null,
+    title: "Cool Date",
+    type: AnswerTypesEnum.DateQuestion,
   },
 ];
 //#endregion
@@ -452,6 +490,7 @@ const createYupSchema = (schema: any, config: AnswerBlock) => {
         return required
           ? yup.object(checkboxValues).required()
           : yup.object(checkboxValues);
+      case AnswerTypesEnum.DateQuestion:
       case AnswerTypesEnum.RadioQuestion:
       case AnswerTypesEnum.GenderQuestion:
       case AnswerTypesEnum.TextQuestion:
@@ -532,6 +571,7 @@ blocks.forEach((block: AnswerBlock) => {
               }, {})) ??
             {},
         };
+      case AnswerTypesEnum.DateQuestion:
       case AnswerTypesEnum.EmailQuestion:
       case AnswerTypesEnum.GenderQuestion:
       case AnswerTypesEnum.NumberQuestion:
@@ -560,6 +600,7 @@ export const ConferenceForm: React.FC = () => {
     return blocks.map((block: AnswerBlock, index) => {
       const fieldMap: any = {
         [AnswerTypesEnum.AddressQuestion]: AddressQuestion,
+        [AnswerTypesEnum.DateQuestion]: DateQuestion,
         [AnswerTypesEnum.NameQuestion]: NameQuestion,
         [AnswerTypesEnum.EmailQuestion]: EmailQuestion,
         [AnswerTypesEnum.NumberQuestion]: NumberQuestion,
@@ -596,51 +637,61 @@ export const ConferenceForm: React.FC = () => {
 
   //#region JSX
   return (
-    <Formik
-      initialValues={initialFormValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-      validateOnMount={true}
-    >
-      {(props): ReactElement => (
-        <Box display='flex' justifyContent='center'>
-          <Form
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              width: "582px",
-              padding: "15px",
-            }}
-          >
-            {renderFormElements(props)}
-            <Grid container spacing={2} marginY={2}>
-              <Grid item xs={3}>
-                <Button variant='contained' color='neutral' fullWidth>
-                  Go Back
-                </Button>
+    <>
+      <Formik
+        initialValues={initialFormValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        validateOnMount={true}
+      >
+        {(props): ReactElement => (
+          <Box display='flex' justifyContent='center'>
+            <Form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                width: "582px",
+                padding: "15px",
+                backgroundColor: "white",
+                margin: "15px 0",
+              }}
+            >
+              {renderFormElements(props)}
+              <Grid container spacing={2} marginY={2}>
+                <Grid item xs={5} md={3}>
+                  <Button variant='contained' color='neutral' fullWidth>
+                    Go Back
+                  </Button>
+                </Grid>
+                <Grid container item xs={7} md={9} justifyContent='center'>
+                  <Button
+                    disabled={!props.isValid || props.isValidating}
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='success'
+                    aria-disabled={!props.isValid || props.isValidating}
+                  >
+                    Submit
+                  </Button>
+                  {!props.isValid && (
+                    <FormHelperText error={!props.isValid}>
+                      Please fill in all required fields
+                    </FormHelperText>
+                  )}
+                </Grid>
               </Grid>
-              <Grid container item xs={9} justifyContent='center'>
-                <Button
-                  disabled={!props.isValid || props.isValidating}
-                  type='submit'
-                  fullWidth
-                  variant='contained'
-                  color='success'
-                  aria-disabled={!props.isValid || props.isValidating}
-                >
-                  Submit
-                </Button>
-                {!props.isValid && (
-                  <FormHelperText error={!props.isValid}>
-                    Please fill in all required fields
-                  </FormHelperText>
-                )}
-              </Grid>
-            </Grid>
-          </Form>
-        </Box>
-      )}
-    </Formik>
+            </Form>
+          </Box>
+        )}
+      </Formik>
+      <Typography marginX={2} paddingBottom={3} align='center'>
+        {`© ${new Date().getFullYear()} | Created with Event Registration Tool, powered by `}
+        <a href='https://www.cru.org/' target='_blank' rel='noreferrer'>
+          Cru
+        </a>
+      </Typography>
+    </>
     //#endregion
   );
 };

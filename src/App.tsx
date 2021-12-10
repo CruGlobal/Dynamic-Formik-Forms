@@ -4,14 +4,18 @@ import { ConferenceForm } from "./Formik/Formik";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { CssBaseline } from "@mui/material";
+import { LocalizationProvider } from "@mui/lab";
+import DateAdapter from "@mui/lab/AdapterLuxon";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <div>
-        <CssBaseline />
-        <ConferenceForm />
-      </div>
+      <LocalizationProvider dateAdapter={DateAdapter}>
+        <div style={{ backgroundColor: "lightgrey" }}>
+          <CssBaseline />
+          <ConferenceForm />
+        </div>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }
