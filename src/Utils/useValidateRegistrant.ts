@@ -1,14 +1,14 @@
 import {
-  AnswerBlock,
-  AnswerBlockChoiceType,
-  AnswerTypesEnum,
+  QuestionBlock,
+  QuestionBlockChoiceType,
+  QuestionTypesEnum,
   RegistrantType,
   RuleType,
   RuleTypeConstantsEnum,
 } from "../Formik/Formik";
 
 const isBlockVisibleRuleCheck = (
-  block: AnswerBlock,
+  block: QuestionBlock,
   registrant: RegistrantType,
   ruleType: RuleTypeConstantsEnum
 ) => {
@@ -95,8 +95,8 @@ const isBlockVisibleRuleCheck = (
 };
 
 const isChoiceVisibleRuleCheck = (
-  block: AnswerBlock,
-  choice: AnswerBlockChoiceType,
+  block: QuestionBlock,
+  choice: QuestionBlockChoiceType,
   registrant: RegistrantType,
   ruleType: string
 ) => {
@@ -169,15 +169,18 @@ const isChoiceVisibleRuleCheck = (
 };
 
 const isBlockInRegistrantType = (
-  block: AnswerBlock,
+  block: QuestionBlock,
   registrant: RegistrantType
 ) => !block.registrantTypes.includes(registrant.registrantTypeId);
 
-const isAnyChoiceVisible = (block: AnswerBlock, registrant: RegistrantType) => {
+const isAnyChoiceVisible = (
+  block: QuestionBlock,
+  registrant: RegistrantType
+) => {
   if (
-    block.type !== AnswerTypesEnum.CheckboxQuestion &&
-    block.type !== AnswerTypesEnum.SelectQuestion &&
-    block.type !== AnswerTypesEnum.RadioQuestion
+    block.type !== QuestionTypesEnum.CheckboxQuestion &&
+    block.type !== QuestionTypesEnum.SelectQuestion &&
+    block.type !== QuestionTypesEnum.RadioQuestion
   ) {
     return true;
   }
@@ -195,7 +198,7 @@ const isAnyChoiceVisible = (block: AnswerBlock, registrant: RegistrantType) => {
 };
 
 const isBlockVisible = (
-  block: AnswerBlock,
+  block: QuestionBlock,
   registrant: RegistrantType,
   isAdmin: boolean
 ) => {
@@ -213,8 +216,8 @@ const isBlockVisible = (
 };
 
 const isChoiceVisible = (
-  block: AnswerBlock,
-  choice: AnswerBlockChoiceType,
+  block: QuestionBlock,
+  choice: QuestionBlockChoiceType,
   registrant: RegistrantType
 ) => {
   return (
@@ -228,7 +231,7 @@ const isChoiceVisible = (
   );
 };
 
-const isCheckboxDisabled = (block: AnswerBlock, registrant: RegistrantType) =>
+const isCheckboxDisabled = (block: QuestionBlock, registrant: RegistrantType) =>
   isBlockVisibleRuleCheck(
     block,
     registrant,

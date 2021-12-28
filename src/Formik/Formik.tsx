@@ -18,7 +18,7 @@ import { RadioQuestion } from "../Fields/RadioQuestion";
 import { DateQuestion } from "../Fields/DateQuestion";
 
 //#region Types
-export interface AnswerBlock {
+export interface QuestionBlock {
   adminOnly: boolean;
   id: string;
   pageId: string;
@@ -28,27 +28,27 @@ export interface AnswerBlock {
   endDateBlockId?: string | null;
   startDateBlockId?: string | null;
   exportFieldTitle?: string | null;
-  type: AnswerTypesEnum;
+  type: QuestionTypesEnum;
   tag?: string | null;
   required: boolean;
   position: number;
   profileType: string | null;
   registrantTypes: string[];
   rules: RuleType[];
-  content: AnswerBlockContentType;
+  content: QuestionBlockContentType;
 }
 
-interface AnswerBlockContentType {
+interface QuestionBlockContentType {
   default: string | {};
   forceSelectionRuleOperand: "AND" | "OR";
   forceSelections: {};
   ruleoperand: "AND" | "OR";
-  choices?: AnswerBlockChoiceType[];
+  choices?: QuestionBlockChoiceType[];
   otherOption?: Record<string, boolean>;
   range?: { min: string; max: string };
 }
 
-export interface AnswerBlockChoiceType {
+export interface QuestionBlockChoiceType {
   value: string;
   desc: string;
   amount?: number;
@@ -110,11 +110,11 @@ export interface RuleType {
 export interface QuestionBlockComponentProps {
   label: string;
   name: string;
-  content: AnswerBlockContentType;
+  content: QuestionBlockContentType;
   required: boolean;
 }
 
-export enum AnswerTypesEnum {
+export enum QuestionTypesEnum {
   AddressQuestion = "addressQuestion",
   // CampusQuestion = "campusQuestion",
   CheckboxQuestion = "checkboxQuestion",
@@ -139,14 +139,14 @@ export enum RuleTypeConstantsEnum {
 //#endregion
 
 //#region JSON Data
-const blocks: AnswerBlock[] = [
+const blocks: QuestionBlock[] = [
   {
     adminOnly: false,
     id: "26c09fa0-f62e-4dc4-a568-b061da6fdb09",
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Email",
     exportFieldTitle: null,
-    type: AnswerTypesEnum.EmailQuestion,
+    type: QuestionTypesEnum.EmailQuestion,
     required: false,
     position: 0,
     content: {
@@ -165,7 +165,7 @@ const blocks: AnswerBlock[] = [
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Name",
     exportFieldTitle: null,
-    type: AnswerTypesEnum.NameQuestion,
+    type: QuestionTypesEnum.NameQuestion,
     required: true,
     position: 1,
     content: {
@@ -184,7 +184,7 @@ const blocks: AnswerBlock[] = [
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Number",
     exportFieldTitle: null,
-    type: AnswerTypesEnum.NumberQuestion,
+    type: QuestionTypesEnum.NumberQuestion,
     required: false,
     position: 2,
     content: {
@@ -203,7 +203,7 @@ const blocks: AnswerBlock[] = [
     pageId: "7b4c19df-7377-4d37-90fb-5b262bb66d1a",
     title: "Dropdown Question",
     exportFieldTitle: null,
-    type: AnswerTypesEnum.SelectQuestion,
+    type: QuestionTypesEnum.SelectQuestion,
     required: true,
     position: 3,
     content: {
@@ -242,7 +242,7 @@ const blocks: AnswerBlock[] = [
     position: 4,
     rules: [],
     title: "Text Question",
-    type: AnswerTypesEnum.TextQuestion,
+    type: QuestionTypesEnum.TextQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -261,7 +261,7 @@ const blocks: AnswerBlock[] = [
     position: 5,
     rules: [],
     title: "TextArea",
-    type: AnswerTypesEnum.TextareaQuestion,
+    type: QuestionTypesEnum.TextareaQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -280,7 +280,7 @@ const blocks: AnswerBlock[] = [
     position: 6,
     rules: [],
     title: "Gender Question",
-    type: AnswerTypesEnum.GenderQuestion,
+    type: QuestionTypesEnum.GenderQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -299,7 +299,7 @@ const blocks: AnswerBlock[] = [
     position: 7,
     rules: [],
     title: "Telephone",
-    type: AnswerTypesEnum.PhoneQuestion,
+    type: QuestionTypesEnum.PhoneQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -318,7 +318,7 @@ const blocks: AnswerBlock[] = [
     position: 8,
     rules: [],
     title: "Year in School",
-    type: AnswerTypesEnum.YearInSchoolQuestion,
+    type: QuestionTypesEnum.YearInSchoolQuestion,
     content: {
       default: "",
       forceSelectionRuleOperand: "AND",
@@ -337,7 +337,7 @@ const blocks: AnswerBlock[] = [
     position: 9,
     rules: [],
     title: "Address Question",
-    type: AnswerTypesEnum.AddressQuestion,
+    type: QuestionTypesEnum.AddressQuestion,
     content: {
       default: "",
       ruleoperand: "AND",
@@ -355,7 +355,7 @@ const blocks: AnswerBlock[] = [
     position: 10,
     rules: [],
     title: "Checkbox Question",
-    type: AnswerTypesEnum.CheckboxQuestion,
+    type: QuestionTypesEnum.CheckboxQuestion,
     content: {
       choices: [
         {
@@ -383,7 +383,7 @@ const blocks: AnswerBlock[] = [
     position: 11,
     rules: [],
     title: "Multiple Choice Question",
-    type: AnswerTypesEnum.RadioQuestion,
+    type: QuestionTypesEnum.RadioQuestion,
     content: {
       choices: [
         {
@@ -426,7 +426,7 @@ const blocks: AnswerBlock[] = [
     startDateBlockId: null,
     tag: null,
     title: "Cool Date",
-    type: AnswerTypesEnum.DateQuestion,
+    type: QuestionTypesEnum.DateQuestion,
   },
 ];
 //#endregion
@@ -437,14 +437,14 @@ const phoneRegex = RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
 // grabbed from https://stackoverflow.com/a/2577239
 const zipCodeRegex = RegExp(/^\d{5}(?:[-\s]\d{4})?$/);
 
-const createYupSchema = (schema: any, config: AnswerBlock) => {
+const createYupSchema = (schema: any, config: QuestionBlock) => {
   // console.log(config);
   const requiredMessage = "This field is required";
   const { id, type, required, content } = config;
 
   let blockType = () => {
     switch (type) {
-      case AnswerTypesEnum.AddressQuestion:
+      case QuestionTypesEnum.AddressQuestion:
         return yup.object({
           address1: required ? yup.string().required() : yup.string(),
           address2: yup.string().notRequired(),
@@ -454,7 +454,7 @@ const createYupSchema = (schema: any, config: AnswerBlock) => {
             ? yup.string().matches(zipCodeRegex).required()
             : yup.string().matches(zipCodeRegex),
         });
-      case AnswerTypesEnum.NameQuestion:
+      case QuestionTypesEnum.NameQuestion:
         return yup.object({
           firstName: required
             ? yup.string().required(requiredMessage)
@@ -463,7 +463,7 @@ const createYupSchema = (schema: any, config: AnswerBlock) => {
             ? yup.string().required(requiredMessage)
             : yup.string(),
         });
-      case AnswerTypesEnum.EmailQuestion:
+      case QuestionTypesEnum.EmailQuestion:
         return required
           ? yup
               .string()
@@ -472,16 +472,16 @@ const createYupSchema = (schema: any, config: AnswerBlock) => {
           : yup
               .string()
               .email("Please enter a valid email such as: example@domain.com");
-      case AnswerTypesEnum.NumberQuestion:
+      case QuestionTypesEnum.NumberQuestion:
         return required ? yup.number().required(requiredMessage) : yup.number();
-      case AnswerTypesEnum.PhoneQuestion:
+      case QuestionTypesEnum.PhoneQuestion:
         return required
           ? yup
               .string()
               .matches(phoneRegex, "Invalid phone number")
               .required(requiredMessage)
           : yup.string().matches(phoneRegex, "Invalid phone number");
-      case AnswerTypesEnum.CheckboxQuestion:
+      case QuestionTypesEnum.CheckboxQuestion:
         const checkboxValues =
           content.choices &&
           content.choices.reduce((acc, choice) => {
@@ -490,20 +490,20 @@ const createYupSchema = (schema: any, config: AnswerBlock) => {
         return required
           ? yup.object(checkboxValues).required()
           : yup.object(checkboxValues);
-      case AnswerTypesEnum.DateQuestion:
-      case AnswerTypesEnum.RadioQuestion:
-      case AnswerTypesEnum.GenderQuestion:
-      case AnswerTypesEnum.TextQuestion:
-      case AnswerTypesEnum.TextareaQuestion:
-      case AnswerTypesEnum.SelectQuestion:
-      case AnswerTypesEnum.YearInSchoolQuestion:
+      case QuestionTypesEnum.DateQuestion:
+      case QuestionTypesEnum.RadioQuestion:
+      case QuestionTypesEnum.GenderQuestion:
+      case QuestionTypesEnum.TextQuestion:
+      case QuestionTypesEnum.TextareaQuestion:
+      case QuestionTypesEnum.SelectQuestion:
+      case QuestionTypesEnum.YearInSchoolQuestion:
         return required ? yup.string().required(requiredMessage) : yup.string();
       default:
         return required ? yup.string().required(requiredMessage) : yup.string();
     }
   };
 
-  if (Object.values(AnswerTypesEnum).indexOf(type) === -1) {
+  if (Object.values(QuestionTypesEnum).indexOf(type) === -1) {
     return schema;
   }
 
@@ -530,10 +530,10 @@ const onSubmit = (attributes: FormSchemaType) => {
 
 const initialFormValues: FormSchemaType = {};
 
-blocks.forEach((block: AnswerBlock) => {
+blocks.forEach((block: QuestionBlock) => {
   const getBlockValue = () => {
     switch (block.type) {
-      case AnswerTypesEnum.AddressQuestion:
+      case QuestionTypesEnum.AddressQuestion:
         return {
           amount: 0,
           blockId: block.id,
@@ -547,7 +547,7 @@ blocks.forEach((block: AnswerBlock) => {
             zip: "",
           },
         };
-      case AnswerTypesEnum.NameQuestion:
+      case QuestionTypesEnum.NameQuestion:
         return {
           amount: 0,
           blockId: block.id,
@@ -558,7 +558,7 @@ blocks.forEach((block: AnswerBlock) => {
             lastName: "",
           },
         };
-      case AnswerTypesEnum.CheckboxQuestion:
+      case QuestionTypesEnum.CheckboxQuestion:
         return {
           amount: 0,
           blockId: block.id,
@@ -571,16 +571,16 @@ blocks.forEach((block: AnswerBlock) => {
               }, {})) ??
             {},
         };
-      case AnswerTypesEnum.DateQuestion:
-      case AnswerTypesEnum.EmailQuestion:
-      case AnswerTypesEnum.GenderQuestion:
-      case AnswerTypesEnum.NumberQuestion:
-      case AnswerTypesEnum.PhoneQuestion:
-      case AnswerTypesEnum.RadioQuestion:
-      case AnswerTypesEnum.SelectQuestion:
-      case AnswerTypesEnum.TextareaQuestion:
-      case AnswerTypesEnum.TextQuestion:
-      case AnswerTypesEnum.YearInSchoolQuestion:
+      case QuestionTypesEnum.DateQuestion:
+      case QuestionTypesEnum.EmailQuestion:
+      case QuestionTypesEnum.GenderQuestion:
+      case QuestionTypesEnum.NumberQuestion:
+      case QuestionTypesEnum.PhoneQuestion:
+      case QuestionTypesEnum.RadioQuestion:
+      case QuestionTypesEnum.SelectQuestion:
+      case QuestionTypesEnum.TextareaQuestion:
+      case QuestionTypesEnum.TextQuestion:
+      case QuestionTypesEnum.YearInSchoolQuestion:
         return {
           amount: 0,
           blockId: block.id,
@@ -597,24 +597,24 @@ blocks.forEach((block: AnswerBlock) => {
 export const ConferenceForm: React.FC = () => {
   //#region Form Elements Creation
   const renderFormElements = (props: FormikProps<any>): any => {
-    return blocks.map((block: AnswerBlock, index) => {
+    return blocks.map((block: QuestionBlock, index) => {
       const fieldMap: any = {
-        [AnswerTypesEnum.AddressQuestion]: AddressQuestion,
-        [AnswerTypesEnum.DateQuestion]: DateQuestion,
-        [AnswerTypesEnum.NameQuestion]: NameQuestion,
-        [AnswerTypesEnum.EmailQuestion]: EmailQuestion,
-        [AnswerTypesEnum.NumberQuestion]: NumberQuestion,
-        [AnswerTypesEnum.SelectQuestion]: SelectQuestion,
-        [AnswerTypesEnum.TextQuestion]: TextQuestion,
-        [AnswerTypesEnum.TextareaQuestion]: TextAreaQuestion,
-        [AnswerTypesEnum.GenderQuestion]: GenderQuestion,
-        [AnswerTypesEnum.PhoneQuestion]: PhoneQuestion,
-        [AnswerTypesEnum.YearInSchoolQuestion]: YearInSchoolQuestion,
-        [AnswerTypesEnum.CheckboxQuestion]: CheckboxQuestion,
-        [AnswerTypesEnum.RadioQuestion]: RadioQuestion,
+        [QuestionTypesEnum.AddressQuestion]: AddressQuestion,
+        [QuestionTypesEnum.DateQuestion]: DateQuestion,
+        [QuestionTypesEnum.NameQuestion]: NameQuestion,
+        [QuestionTypesEnum.EmailQuestion]: EmailQuestion,
+        [QuestionTypesEnum.NumberQuestion]: NumberQuestion,
+        [QuestionTypesEnum.SelectQuestion]: SelectQuestion,
+        [QuestionTypesEnum.TextQuestion]: TextQuestion,
+        [QuestionTypesEnum.TextareaQuestion]: TextAreaQuestion,
+        [QuestionTypesEnum.GenderQuestion]: GenderQuestion,
+        [QuestionTypesEnum.PhoneQuestion]: PhoneQuestion,
+        [QuestionTypesEnum.YearInSchoolQuestion]: YearInSchoolQuestion,
+        [QuestionTypesEnum.CheckboxQuestion]: CheckboxQuestion,
+        [QuestionTypesEnum.RadioQuestion]: RadioQuestion,
       };
 
-      if (Object.values(AnswerTypesEnum).indexOf(block.type) === -1)
+      if (Object.values(QuestionTypesEnum).indexOf(block.type) === -1)
         return null;
 
       const Component = fieldMap[block.type];
