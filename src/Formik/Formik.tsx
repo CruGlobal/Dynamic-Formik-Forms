@@ -5,7 +5,13 @@ import { NameQuestion } from "../Fields/NameQuestion";
 import { EmailQuestion } from "../Fields/EmailQuestion";
 import { NumberQuestion } from "../Fields/NumberQuestion";
 import { SelectQuestion } from "../Fields/SelectQuestion";
-import { Button, FormHelperText, Grid, Typography } from "@mui/material";
+import {
+  AppBar,
+  Button,
+  FormHelperText,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { TextQuestion } from "../Fields/TextQuestion";
 import { TextAreaQuestion } from "../Fields/TextAreaQuestion";
@@ -16,6 +22,8 @@ import { AddressQuestion } from "../Fields/AddressQuestion";
 import { CheckboxQuestion } from "../Fields/CheckboxQuestion";
 import { RadioQuestion } from "../Fields/RadioQuestion";
 import { DateQuestion } from "../Fields/DateQuestion";
+import CalendarIcon from "@mui/icons-material/CalendarToday";
+import theme from "../theme";
 
 //#region Types
 export interface QuestionBlock {
@@ -397,7 +405,7 @@ const blocks: QuestionBlock[] = [
           operand: "OR",
         },
       ],
-      default: {},
+      default: "",
       forceSelectionRuleOperand: "AND",
       forceSelections: {},
       otherOption: { enabled: false },
@@ -638,54 +646,108 @@ export const ConferenceForm: React.FC = () => {
   //#region JSX
   return (
     <>
-      <Formik
-        initialValues={initialFormValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        validateOnMount={true}
-      >
-        {(props): ReactElement => (
-          <Box display='flex' justifyContent='center'>
-            <Form
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                width: "582px",
-                padding: "15px",
-                backgroundColor: "white",
-                margin: "15px 0",
-              }}
+      <Box>
+        <Box
+          paddingTop={2}
+          sx={{
+            backgroundColor: theme.palette.primary.light,
+            borderBottom: `4px solid ${theme.palette.primary.main}`,
+          }}
+        ></Box>
+        <AppBar
+          position='static'
+          style={{ backgroundColor: theme.palette.primary.dark }}
+        >
+          <Box
+            display='flex'
+            flexDirection='column'
+            width='100%'
+            maxWidth='612px'
+            marginX='auto'
+            marginTop='1.5rem'
+            paddingX='15px'
+          >
+            <Box
+              display='flex'
+              alignItems='center'
+              justifyContent='space-between'
             >
-              {renderFormElements(props)}
-              <Grid container spacing={2} marginY={2}>
-                <Grid item xs={5} md={3}>
-                  <Button variant='contained' color='neutral' fullWidth>
-                    Go Back
-                  </Button>
-                </Grid>
-                <Grid container item xs={7} md={9} justifyContent='center'>
-                  <Button
-                    disabled={!props.isValid || props.isValidating}
-                    type='submit'
-                    fullWidth
-                    variant='contained'
-                    color='success'
-                    aria-disabled={!props.isValid || props.isValidating}
-                  >
-                    Submit
-                  </Button>
-                  {!props.isValid && (
-                    <FormHelperText error={!props.isValid}>
-                      Please fill in all required fields
-                    </FormHelperText>
-                  )}
-                </Grid>
-              </Grid>
-            </Form>
+              <Typography variant='h1' fontSize='24px' fontWeight='600'>
+                test
+              </Typography>
+              <Button
+                type='submit'
+                variant='contained'
+                size='small'
+                color='info'
+              >
+                <Typography fontWeight='600' fontSize='14px'>
+                  Sign out
+                </Typography>
+              </Button>
+            </Box>
+            <Box
+              display='flex'
+              marginTop='21px'
+              marginBottom='10px'
+              alignItems='center'
+            >
+              <CalendarIcon sx={{ fontSize: "14px", marginRight: "5px" }} />
+              <Typography fontSize='14px'>
+                Mon, Dec 27, 2021 2:21pm - Wed, Jun 19, 2024 2:21pm
+              </Typography>
+            </Box>
           </Box>
-        )}
-      </Formik>
-      <Typography marginX={2} paddingBottom={3} align='center'>
+        </AppBar>
+        <Formik
+          initialValues={initialFormValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          validateOnMount={true}
+        >
+          {(props): ReactElement => (
+            <Box display='flex' justifyContent='center'>
+              <Form
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "612px",
+                  padding: "15px",
+                  backgroundColor: "white",
+                  margin: "15px 0",
+                }}
+              >
+                {renderFormElements(props)}
+                <Grid container spacing={2} marginY={2}>
+                  <Grid item xs={5} md={3}>
+                    <Button variant='contained' color='neutral' fullWidth>
+                      Go Back
+                    </Button>
+                  </Grid>
+                  <Grid container item xs={7} md={9} justifyContent='center'>
+                    <Button
+                      disabled={!props.isValid || props.isValidating}
+                      type='submit'
+                      fullWidth
+                      variant='contained'
+                      color='success'
+                      aria-disabled={!props.isValid || props.isValidating}
+                    >
+                      Submit
+                    </Button>
+                    {!props.isValid && (
+                      <FormHelperText error={!props.isValid}>
+                        Please fill in all required fields
+                      </FormHelperText>
+                    )}
+                  </Grid>
+                </Grid>
+              </Form>
+            </Box>
+          )}
+        </Formik>
+      </Box>
+      <Typography marginX={2} paddingBottom={3} fontSize='14px' align='center'>
         {`© ${new Date().getFullYear()} | Created with Event Registration Tool, powered by `}
         <a href='https://www.cru.org/' target='_blank' rel='noreferrer'>
           Cru
