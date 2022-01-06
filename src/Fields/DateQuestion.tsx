@@ -57,7 +57,7 @@ export const DateQuestion = (props: QuestionBlockComponentProps) => {
                     })
                   : form.setFieldValue(props.name, {
                       ...form.values[props.name],
-                      value: `${date.year}-${date.month}-${date.day}`,
+                      value: date?.toFormat("yyyy-MM-dd"),
                     });
               }}
               minDate={

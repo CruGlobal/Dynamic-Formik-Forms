@@ -418,7 +418,7 @@ const blocks: QuestionBlock[] = [
       default: "",
       forceSelectionRuleOperand: "AND",
       forceSelections: {},
-      range: { min: "2021-12-13", max: "2021-12-30" },
+      // range: { min: "2022-12-13", max: "2021-12-30" }
       ruleoperand: "AND",
     },
     endDateBlockId: null,
