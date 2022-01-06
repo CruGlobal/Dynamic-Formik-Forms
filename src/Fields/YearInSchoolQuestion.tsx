@@ -9,7 +9,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { Field, FieldProps } from "formik";
+import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
 enum SchoolYearsEnum {
@@ -28,7 +28,7 @@ export const YearInSchoolQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <Field name={`${props.name}.value`}>
+      <FastField name={`${props.name}.value`}>
         {({ field, meta }: FieldProps) => (
           <FormControl
             fullWidth
@@ -55,7 +55,7 @@ export const YearInSchoolQuestion = (props: QuestionBlockComponentProps) => {
             </Grid>
           </FormControl>
         )}
-      </Field>
+      </FastField>
     </Box>
   );
 };

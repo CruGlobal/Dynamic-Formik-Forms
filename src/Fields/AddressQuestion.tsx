@@ -9,7 +9,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { Field, FieldProps } from "formik";
+import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
 export const AddressQuestion = (props: QuestionBlockComponentProps) => {
@@ -33,7 +33,7 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
             spacing={2}
           >
             <Grid container item direction='column' xs={12}>
-              <Field name={`${props.name}.value.address1`}>
+              <FastField name={`${props.name}.value.address1`}>
                 {({ field, meta }: FieldProps) => (
                   <TextField
                     fullWidth
@@ -44,10 +44,10 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
                     {...field}
                   />
                 )}
-              </Field>
+              </FastField>
             </Grid>
             <Grid container item direction='column' xs={12}>
-              <Field name={`${props.name}.value.address2`}>
+              <FastField name={`${props.name}.value.address2`}>
                 {({ field, meta }: FieldProps) => (
                   <TextField
                     fullWidth
@@ -58,11 +58,11 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
                     {...field}
                   />
                 )}
-              </Field>
+              </FastField>
             </Grid>
             <Grid container item xs={12} spacing={2}>
               <Grid item xs={4}>
-                <Field name={`${props.name}.value.city`}>
+                <FastField name={`${props.name}.value.city`}>
                   {({ field, meta }: FieldProps) => (
                     <TextField
                       fullWidth
@@ -73,10 +73,10 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
                       {...field}
                     />
                   )}
-                </Field>
+                </FastField>
               </Grid>
               <Grid item xs={4}>
-                <Field name={`${props.name}.value.state`}>
+                <FastField name={`${props.name}.value.state`}>
                   {({ field, meta }: FieldProps) => (
                     <FormControl fullWidth size='small'>
                       <InputLabel id='state-label'>State</InputLabel>
@@ -97,10 +97,10 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
                       </Select>
                     </FormControl>
                   )}
-                </Field>
+                </FastField>
               </Grid>
               <Grid item xs={4}>
-                <Field name={`${props.name}.value.zip`}>
+                <FastField name={`${props.name}.value.zip`}>
                   {({ field, meta }: FieldProps) => (
                     <TextField
                       fullWidth
@@ -111,7 +111,7 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
                       {...field}
                     />
                   )}
-                </Field>
+                </FastField>
               </Grid>
             </Grid>
           </Grid>

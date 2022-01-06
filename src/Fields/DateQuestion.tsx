@@ -2,7 +2,7 @@ import React from "react";
 import { MobileDatePicker } from "@mui/lab";
 import { Box } from "@mui/system";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
-import { Field, FieldProps } from "formik";
+import { FastField, FieldProps } from "formik";
 import {
   FormControl,
   FormLabel,
@@ -20,7 +20,7 @@ export const DateQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <Field name={`${props.name}.value`}>
+      <FastField name={`${props.name}.value`}>
         {({ field, meta, form }: FieldProps) => (
           <FormControl
             fullWidth
@@ -78,7 +78,7 @@ export const DateQuestion = (props: QuestionBlockComponentProps) => {
             />
           </FormControl>
         )}
-      </Field>
+      </FastField>
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useMemo } from "react";
 import { Form, Formik, FormikProps } from "formik";
 import * as yup from "yup";
 import { NameQuestion } from "../Fields/NameQuestion";
@@ -604,43 +604,46 @@ blocks.forEach((block: QuestionBlock) => {
 
 export const ConferenceForm: React.FC = () => {
   //#region Form Elements Creation
-  const renderFormElements = (props: FormikProps<any>): any => {
-    return blocks.map((block: QuestionBlock, index) => {
-      const fieldMap: any = {
-        [QuestionTypesEnum.AddressQuestion]: AddressQuestion,
-        [QuestionTypesEnum.DateQuestion]: DateQuestion,
-        [QuestionTypesEnum.NameQuestion]: NameQuestion,
-        [QuestionTypesEnum.EmailQuestion]: EmailQuestion,
-        [QuestionTypesEnum.NumberQuestion]: NumberQuestion,
-        [QuestionTypesEnum.SelectQuestion]: SelectQuestion,
-        [QuestionTypesEnum.TextQuestion]: TextQuestion,
-        [QuestionTypesEnum.TextareaQuestion]: TextAreaQuestion,
-        [QuestionTypesEnum.GenderQuestion]: GenderQuestion,
-        [QuestionTypesEnum.PhoneQuestion]: PhoneQuestion,
-        [QuestionTypesEnum.YearInSchoolQuestion]: YearInSchoolQuestion,
-        [QuestionTypesEnum.CheckboxQuestion]: CheckboxQuestion,
-        [QuestionTypesEnum.RadioQuestion]: RadioQuestion,
-      };
+  const renderFormElements = useMemo(
+    () =>
+      blocks.map((block: QuestionBlock, index) => {
+        const fieldMap = {
+          [QuestionTypesEnum.AddressQuestion]: AddressQuestion,
+          [QuestionTypesEnum.DateQuestion]: DateQuestion,
+          [QuestionTypesEnum.NameQuestion]: NameQuestion,
+          [QuestionTypesEnum.EmailQuestion]: EmailQuestion,
+          [QuestionTypesEnum.NumberQuestion]: NumberQuestion,
+          [QuestionTypesEnum.SelectQuestion]: SelectQuestion,
+          [QuestionTypesEnum.TextQuestion]: TextQuestion,
+          [QuestionTypesEnum.TextareaQuestion]: TextAreaQuestion,
+          [QuestionTypesEnum.GenderQuestion]: GenderQuestion,
+          [QuestionTypesEnum.PhoneQuestion]: PhoneQuestion,
+          [QuestionTypesEnum.YearInSchoolQuestion]: YearInSchoolQuestion,
+          [QuestionTypesEnum.CheckboxQuestion]: CheckboxQuestion,
+          [QuestionTypesEnum.RadioQuestion]: RadioQuestion,
+        };
 
-      if (Object.values(QuestionTypesEnum).indexOf(block.type) === -1)
-        return null;
+        if (Object.values(QuestionTypesEnum).indexOf(block.type) === -1)
+          return null;
 
-      const Component = fieldMap[block.type];
+        const Component = fieldMap[block.type];
 
-      if (block.type) {
-        return (
-          <Component
-            key={index}
-            label={block.title}
-            name={block.id}
-            content={block.content}
-            required={block.required}
-          />
-        );
-      }
-      return "";
-    });
-  };
+        if (block.type) {
+          return (
+            <Component
+              key={index}
+              label={block.title}
+              name={block.id}
+              content={block.content}
+              required={block.required}
+            />
+          );
+        }
+        return "";
+      }),
+    []
+  );
+
   //#endregion
 
   //#region JSX
@@ -717,7 +720,7 @@ export const ConferenceForm: React.FC = () => {
                   margin: "15px 0",
                 }}
               >
-                {renderFormElements(props)}
+                {renderFormElements}
                 <Grid container spacing={2} marginY={2}>
                   <Grid item xs={5} md={3}>
                     <Button variant='contained' color='neutral' fullWidth>

@@ -7,7 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { Field, FieldProps } from "formik";
+import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
 export const NameQuestion = (props: QuestionBlockComponentProps) => {
@@ -31,7 +31,7 @@ export const NameQuestion = (props: QuestionBlockComponentProps) => {
             spacing={2}
           >
             <Grid container item direction='column' xs={6}>
-              <Field name={`${props.name}.value.firstName`}>
+              <FastField name={`${props.name}.value.firstName`}>
                 {({ field, meta }: FieldProps) => (
                   <>
                     <TextField
@@ -48,10 +48,10 @@ export const NameQuestion = (props: QuestionBlockComponentProps) => {
                     </FormHelperText>
                   </>
                 )}
-              </Field>
+              </FastField>
             </Grid>
             <Grid container item direction='column' xs={6}>
-              <Field name={`${props.name}.value.lastName`}>
+              <FastField name={`${props.name}.value.lastName`}>
                 {({ field, meta }: FieldProps) => (
                   <>
                     <TextField
@@ -68,7 +68,7 @@ export const NameQuestion = (props: QuestionBlockComponentProps) => {
                     </FormHelperText>
                   </>
                 )}
-              </Field>
+              </FastField>
             </Grid>
           </Grid>
         </Grid>

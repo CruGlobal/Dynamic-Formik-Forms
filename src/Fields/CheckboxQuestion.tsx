@@ -1,7 +1,7 @@
 import React from "react";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 import { Box } from "@mui/system";
-import { Field, FieldProps } from "formik";
+import { FastField, FieldProps } from "formik";
 import {
   Checkbox,
   FormControl,
@@ -18,7 +18,7 @@ export const CheckboxQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <Field name={`${props.name}.value`}>
+      <FastField name={`${props.name}.value`}>
         {({ meta, form }: FieldProps) => (
           <FormControl
             fullWidth
@@ -57,7 +57,7 @@ export const CheckboxQuestion = (props: QuestionBlockComponentProps) => {
             </FormGroup>
           </FormControl>
         )}
-      </Field>
+      </FastField>
     </Box>
   );
 };

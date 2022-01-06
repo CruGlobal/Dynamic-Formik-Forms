@@ -7,7 +7,7 @@ import {
   Select,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { Field, FieldProps } from "formik";
+import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
 export const SelectQuestion = (props: QuestionBlockComponentProps) => {
@@ -18,7 +18,7 @@ export const SelectQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <Field name={`${props.name}.value`}>
+      <FastField name={`${props.name}.value`}>
         {({ field, meta, form }: FieldProps) => (
           <FormControl
             fullWidth
@@ -74,7 +74,7 @@ export const SelectQuestion = (props: QuestionBlockComponentProps) => {
             <FormHelperText>{meta.touched && meta.error}</FormHelperText>
           </FormControl>
         )}
-      </Field>
+      </FastField>
     </Box>
   );
 };
