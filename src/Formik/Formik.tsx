@@ -1,5 +1,5 @@
 import React, { ReactElement, useMemo } from "react";
-import { Form, Formik, FormikProps } from "formik";
+import { Form, Formik } from "formik";
 import * as yup from "yup";
 import { NameQuestion } from "../Fields/NameQuestion";
 import { EmailQuestion } from "../Fields/EmailQuestion";
