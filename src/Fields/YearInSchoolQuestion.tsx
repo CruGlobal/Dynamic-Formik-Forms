@@ -20,7 +20,9 @@ enum SchoolYearsEnum {
   GraduateStudent = "Graduate Student",
 }
 
-export const YearInSchoolQuestion = (props: QuestionBlockComponentProps) => {
+export const YearInSchoolQuestion = ({
+  block,
+}: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -28,16 +30,16 @@ export const YearInSchoolQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <FastField name={`${props.name}.value`}>
+      <FastField name={`${block.id}.value`}>
         {({ field, meta }: FieldProps) => (
           <FormControl
             fullWidth
-            required={props.required}
+            required={block.required}
             error={meta.touched && !!meta.error}
           >
             <Grid container direction='column'>
               <Grid item>
-                <FormLabel required={props.required}>{props.label}</FormLabel>
+                <FormLabel required={block.required}>{block.title}</FormLabel>
               </Grid>
               <Grid item>
                 <RadioGroup aria-label='gender' defaultValue='' {...field}>

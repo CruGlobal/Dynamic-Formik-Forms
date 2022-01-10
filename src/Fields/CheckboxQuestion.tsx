@@ -10,7 +10,7 @@ import {
   FormLabel,
 } from "@mui/material";
 
-export const CheckboxQuestion = (props: QuestionBlockComponentProps) => {
+export const CheckboxQuestion = ({ block }: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -18,32 +18,32 @@ export const CheckboxQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <FastField name={`${props.name}.value`}>
+      <FastField name={`${block.id}.value`}>
         {({ meta, form }: FieldProps) => (
           <FormControl
             fullWidth
-            required={props.required}
+            required={block.required}
             error={meta.touched && !!meta.error}
           >
-            <FormLabel>{props.label}</FormLabel>
+            <FormLabel>{block.title}</FormLabel>
             <FormGroup>
-              {props.content.choices &&
-                props.content.choices.map((choice, index) => (
+              {block.content.choices &&
+                block.content.choices.map((choice, index) => (
                   <FormControlLabel
                     key={index}
                     control={
                       <Checkbox
-                        checked={form.values[props.name].value[choice.value]}
+                        checked={form.values[block.id].value[choice.value]}
                         onChange={(e) => {
-                          if (props.content.choices) {
-                            form.setFieldValue(props.name, {
-                              ...form.values[props.name],
+                          if (block.content.choices) {
+                            form.setFieldValue(block.id, {
+                              ...form.values[block.id],
                               value: {
-                                ...form.values[props.name].value,
-                                [props.content.choices[index].value]:
-                                  !form.values[props.name].value[choice.value],
+                                ...form.values[block.id].value,
+                                [block.content.choices[index].value]:
+                                  !form.values[block.id].value[choice.value],
                               },
-                              amount: props.content?.choices[index].amount ?? 0,
+                              amount: block.content?.choices[index].amount ?? 0,
                             });
                           }
                         }}

@@ -12,7 +12,7 @@ import { Box } from "@mui/system";
 import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
-export const RadioQuestion = (props: QuestionBlockComponentProps) => {
+export const RadioQuestion = ({ block }: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -20,21 +20,21 @@ export const RadioQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <FastField name={`${props.name}.value`}>
+      <FastField name={`${block.id}.value`}>
         {({ field, meta }: FieldProps) => (
           <FormControl
             fullWidth
-            required={props.required}
+            required={block.required}
             error={meta.touched && !!meta.error}
           >
             <Grid container direction='column'>
               <Grid item>
-                <FormLabel required={props.required}>{props.label}</FormLabel>
+                <FormLabel required={block.required}>{block.title}</FormLabel>
               </Grid>
               <Grid item>
                 <RadioGroup {...field}>
-                  {props.content.choices &&
-                    props.content.choices.map((choice, index) => (
+                  {block.content.choices &&
+                    block.content.choices.map((choice, index) => (
                       <FormControlLabel
                         key={index}
                         value={choice.value}

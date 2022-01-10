@@ -116,10 +116,7 @@ export interface RuleType {
 }
 
 export interface QuestionBlockComponentProps {
-  label: string;
-  name: string;
-  content: QuestionBlockContentType;
-  required: boolean;
+  block: QuestionBlock;
 }
 
 export enum QuestionTypesEnum {
@@ -629,15 +626,7 @@ export const ConferenceForm: React.FC = () => {
         const Component = fieldMap[block.type];
 
         if (block.type) {
-          return (
-            <Component
-              key={index}
-              label={block.title}
-              name={block.id}
-              content={block.content}
-              required={block.required}
-            />
-          );
+          return <Component key={index} block={block} />;
         }
         return "";
       }),

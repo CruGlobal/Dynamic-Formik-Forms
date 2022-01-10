@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
-export const NameQuestion = (props: QuestionBlockComponentProps) => {
+export const NameQuestion = ({ block }: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -18,10 +18,10 @@ export const NameQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl fullWidth required={props.required}>
+      <FormControl fullWidth required={block.required}>
         <Grid container direction='column'>
           <Grid item>
-            <FormLabel required={props.required}>{props.label}</FormLabel>
+            <FormLabel required={block.required}>{block.title}</FormLabel>
           </Grid>
           <Grid
             container
@@ -31,7 +31,7 @@ export const NameQuestion = (props: QuestionBlockComponentProps) => {
             spacing={2}
           >
             <Grid container item direction='column' xs={6}>
-              <FastField name={`${props.name}.value.firstName`}>
+              <FastField name={`${block.id}.value.firstName`}>
                 {({ field, meta }: FieldProps) => (
                   <>
                     <TextField
@@ -39,7 +39,7 @@ export const NameQuestion = (props: QuestionBlockComponentProps) => {
                       type='text'
                       size='small'
                       placeholder={"First Name"}
-                      required={props.required}
+                      required={block.required}
                       error={meta.touched && !!meta.error}
                       {...field}
                     />
@@ -51,7 +51,7 @@ export const NameQuestion = (props: QuestionBlockComponentProps) => {
               </FastField>
             </Grid>
             <Grid container item direction='column' xs={6}>
-              <FastField name={`${props.name}.value.lastName`}>
+              <FastField name={`${block.id}.value.lastName`}>
                 {({ field, meta }: FieldProps) => (
                   <>
                     <TextField
@@ -59,7 +59,7 @@ export const NameQuestion = (props: QuestionBlockComponentProps) => {
                       type='text'
                       size='small'
                       placeholder={"Last Name"}
-                      required={props.required}
+                      required={block.required}
                       error={meta.touched && !!meta.error}
                       {...field}
                     />

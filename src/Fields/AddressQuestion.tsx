@@ -12,7 +12,7 @@ import { Box } from "@mui/system";
 import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
-export const AddressQuestion = (props: QuestionBlockComponentProps) => {
+export const AddressQuestion = ({ block }: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -20,10 +20,10 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <FormControl fullWidth required={props.required}>
+      <FormControl fullWidth required={block.required}>
         <Grid container direction='column' spacing={1}>
           <Grid item>
-            <FormLabel required={props.required}>{props.label}</FormLabel>
+            <FormLabel required={block.required}>{block.title}</FormLabel>
           </Grid>
           <Grid
             container
@@ -33,7 +33,7 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
             spacing={2}
           >
             <Grid container item direction='column' xs={12}>
-              <FastField name={`${props.name}.value.address1`}>
+              <FastField name={`${block.id}.value.address1`}>
                 {({ field, meta }: FieldProps) => (
                   <TextField
                     fullWidth
@@ -47,7 +47,7 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
               </FastField>
             </Grid>
             <Grid container item direction='column' xs={12}>
-              <FastField name={`${props.name}.value.address2`}>
+              <FastField name={`${block.id}.value.address2`}>
                 {({ field, meta }: FieldProps) => (
                   <TextField
                     fullWidth
@@ -62,7 +62,7 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
             </Grid>
             <Grid container item xs={12} spacing={2}>
               <Grid item xs={4}>
-                <FastField name={`${props.name}.value.city`}>
+                <FastField name={`${block.id}.value.city`}>
                   {({ field, meta }: FieldProps) => (
                     <TextField
                       fullWidth
@@ -76,7 +76,7 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
                 </FastField>
               </Grid>
               <Grid item xs={4}>
-                <FastField name={`${props.name}.value.state`}>
+                <FastField name={`${block.id}.value.state`}>
                   {({ field, meta }: FieldProps) => (
                     <FormControl fullWidth size='small'>
                       <InputLabel id='state-label'>State</InputLabel>
@@ -100,7 +100,7 @@ export const AddressQuestion = (props: QuestionBlockComponentProps) => {
                 </FastField>
               </Grid>
               <Grid item xs={4}>
-                <FastField name={`${props.name}.value.zip`}>
+                <FastField name={`${block.id}.value.zip`}>
                   {({ field, meta }: FieldProps) => (
                     <TextField
                       fullWidth

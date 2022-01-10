@@ -5,7 +5,7 @@ import { FormControl, FormHelperText, FormLabel, Grid } from "@mui/material";
 import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
-export const NumberQuestion = (props: QuestionBlockComponentProps) => {
+export const NumberQuestion = ({ block }: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -13,16 +13,16 @@ export const NumberQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <FastField name={`${props.name}.value`}>
+      <FastField name={`${block.id}.value`}>
         {({ field, meta }: FieldProps) => (
           <FormControl
             fullWidth
-            required={props.required}
+            required={block.required}
             error={meta.touched && !!meta.error}
           >
             <Grid container direction='column'>
               <Grid item>
-                <FormLabel required={props.required}>{props.label}</FormLabel>
+                <FormLabel required={block.required}>{block.title}</FormLabel>
               </Grid>
               <Grid item>
                 <TextField

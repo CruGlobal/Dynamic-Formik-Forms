@@ -12,7 +12,7 @@ import {
 import { DateTime } from "luxon";
 import CalendarIcon from "@mui/icons-material/Event";
 
-export const DateQuestion = (props: QuestionBlockComponentProps) => {
+export const DateQuestion = ({ block }: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -20,20 +20,20 @@ export const DateQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <FastField name={`${props.name}.value`}>
+      <FastField name={`${block.id}.value`}>
         {({ field, meta, form }: FieldProps) => (
           <FormControl
             fullWidth
-            required={props.required}
+            required={block.required}
             error={meta.touched && !!meta.error}
           >
             <FormLabel style={{ marginBottom: "10px" }}>
-              {props.label}
+              {block.title}
             </FormLabel>
             <MobileDatePicker
               inputFormat='MM/dd/yyyy'
               InputProps={{
-                "aria-label": props.label,
+                "aria-label": block.title,
                 startAdornment: (
                   <InputAdornment position='start'>
                     <CalendarIcon />
@@ -51,23 +51,23 @@ export const DateQuestion = (props: QuestionBlockComponentProps) => {
               clearable
               onChange={(date: DateTime | null) => {
                 !date
-                  ? form.setFieldValue(props.name, {
-                      ...form.values[props.name],
+                  ? form.setFieldValue(block.id, {
+                      ...form.values[block.id],
                       value: "",
                     })
-                  : form.setFieldValue(props.name, {
-                      ...form.values[props.name],
+                  : form.setFieldValue(block.id, {
+                      ...form.values[block.id],
                       value: date?.toFormat("yyyy-MM-dd"),
                     });
               }}
               minDate={
-                props.content.range?.min
-                  ? DateTime.fromFormat(props.content.range?.min, "yyyy-MM-dd")
+                block.content.range?.min
+                  ? DateTime.fromFormat(block.content.range?.min, "yyyy-MM-dd")
                   : undefined
               }
               maxDate={
-                props.content.range?.max
-                  ? DateTime.fromFormat(props.content.range?.max, "yyyy-MM-dd")
+                block.content.range?.max
+                  ? DateTime.fromFormat(block.content.range?.max, "yyyy-MM-dd")
                   : undefined
               }
               value={
