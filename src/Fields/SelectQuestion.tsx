@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 import { FastField, FieldProps } from "formik";
 import { QuestionBlockComponentProps } from "../Formik/Formik";
 
-export const SelectQuestion = (props: QuestionBlockComponentProps) => {
+export const SelectQuestion = ({ block }: QuestionBlockComponentProps) => {
   return (
     <Box
       display='flex'
@@ -18,23 +18,23 @@ export const SelectQuestion = (props: QuestionBlockComponentProps) => {
       justifyItems='center'
       marginY={2}
     >
-      <FastField name={`${props.name}.value`}>
+      <FastField name={`${block.id}.value`}>
         {({ field, meta, form }: FieldProps) => (
           <FormControl
             fullWidth
-            required={props.required}
+            required={block.required}
             error={meta.touched && !!meta.error}
           >
-            <FormLabel>{props.label}</FormLabel>
+            <FormLabel>{block.title}</FormLabel>
             <Select
               fullWidth
               size='small'
-              required={props.required}
+              required={block.required}
               error={meta.touched && !!meta.error}
               {...field}
               onChange={(e) => {
-                if (props.content.choices) {
-                  const choiceIndex = props.content?.choices.findIndex(
+                if (block.content.choices) {
+                  const choiceIndex = block.content?.choices.findIndex(
                     (choice: {
                       value: string;
                       desc?: string;
@@ -42,10 +42,10 @@ export const SelectQuestion = (props: QuestionBlockComponentProps) => {
                     }) => choice.value === e.target.value
                   );
 
-                  form.setFieldValue(props.name, {
-                    ...form.values[props.name],
+                  form.setFieldValue(block.id, {
+                    ...form.values[block.id],
                     value: e.target.value,
-                    amount: props.content?.choices[choiceIndex].amount ?? 0,
+                    amount: block.content?.choices[choiceIndex].amount ?? 0,
                   });
                 }
               }}
@@ -53,8 +53,8 @@ export const SelectQuestion = (props: QuestionBlockComponentProps) => {
               <MenuItem disabled value={""}>
                 Choose one...
               </MenuItem>
-              {props.content.choices &&
-                props.content?.choices.map(
+              {block.content.choices &&
+                block.content?.choices.map(
                   (
                     choice: { value: string; desc?: string; amount?: number },
                     index: number
